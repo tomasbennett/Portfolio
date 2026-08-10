@@ -1,0 +1,68 @@
+import { User } from "@prisma/client";
+import { Response } from "express";
+
+import crypto from "crypto";
+import { environment } from "../../../shared/constants";
+import { prisma } from "../../lib/prisma";
+import { ISignInError, ISuccessResSignIn } from "../../../shared/features/auth/models/ILoginSchema";
+import { IAccessTokenResponse } from "../../../shared/features/auth/models/IAccessTokenResponse";
+import { CreateAccessToken } from "./CreateAccessToken";
+import { refreshTokenCookieKey } from "../constants/constants";
+import { IAuthUserInfo } from "../../../shared/features/auth/models/IAuthUserInfo";
+
+
+export async function issueSignedInResponse(user: IAuthUserInfo, res: Response<ISignInError | ISuccessResSignIn>) {
+    try {
+        const accessToken = CreateAccessToken(user.userId);
+    
+        const refreshToken = crypto.randomBytes(64).toString('hex');
+        const refreshTokenHash = crypto
+            .createHash("sha256")
+            .update(refreshToken)
+            .digest("hex");
+    
+    
+    
+        const expiry: number = 7 * 24 * 60 * 60 * 1000;
+    
+        await prisma.refreshToken.create({
+            data: {
+                hashedToken: refreshTokenHash,
+                userId: user.userId,
+                // expiresAt: new Date(Date.now() + expiry)
+            }
+        });
+    
+        return res
+            .cookie(refreshTokenCookieKey, refreshToken, {
+                httpOnly: true,
+                secure: environment === "PROD",
+                sameSite: environment === "PROD" ? "none" : "lax",
+                // maxAge: expiry
+            })
+            .status(200)
+            .json({
+                message: "Login successful",
+                ok: true,
+                status: 200,
+                accessToken,
+                userId: user.userId,
+                username: user.username,
+                userProfileImgUrl: user?.userProfileImgUrl
+            });
+
+
+    } catch (error: unknown) {
+        if (error instanceof Error) {
+            return res.status(500).json({
+                message: error.message,
+                inputType: "root"
+            });
+        }
+
+        return res.status(500).json({
+            message: "Internal server error creating refresh token",
+            inputType: "root"
+        });
+    }
+}
