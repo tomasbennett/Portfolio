@@ -20,8 +20,6 @@ import { Server, Socket } from "socket.io";
 import { connectedUsers } from "./sockets/UserSocketMapping";
 import { SOCKET_SET_VISIBLE_ROOMS_LISTENER_KEY } from "../../shared/features/socket/constants";
 import { watchedRooms } from "./sockets/WatchedRooms";
-// import { SOCKET_COMMENT_POST_IS_VISIBLE_ROOM_PREFIX } from "../../shared/features/commentsThread/constants";
-
 
 
 

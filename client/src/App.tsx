@@ -13,15 +13,13 @@ import { profileStateQueryKey } from './features/profile/constants/profileStateQ
 import { IProfileSections } from './features/profile/models/IProfileSections'
 import { SearchUsersLayout } from './features/search/layouts/SearchUsersLayout'
 import { SidebarsLayout } from './layouts/SidebarsLayout'
+import { HomeLayout } from './features/home/layouts/HomeLayout'
 
 
 const router = createBrowserRouter([
   {
     path: homePageRoute,
-    element:
-      <AuthProvider>
-        <GeneralHomeLayout />
-      </AuthProvider>,
+    element: <GeneralHomeLayout />,
     errorElement: <ErrorElement />,
     children: [
       {
@@ -29,53 +27,9 @@ const router = createBrowserRouter([
         element: <ErrorPageLayout />,
       },
       {
-        element:
-          <NotAuthenticatedRoute>
-            <Outlet />
-          </NotAuthenticatedRoute>,
-        children: [
-          {
-            element: <SignInLayout />,
-            children: [
-              {
-                path: "login",
-                handle: {
-                  title: "Login",
-                }
-              },
-              {
-                path: "register",
-                handle: {
-                  title: "Register",
-                }
-              }
-            ]
-          }
-        ]
+        index: true,
+        element: <HomeLayout />
       },
-      {
-        element:
-          <ProtectedRoute>
-            <SocketProvider>
-              <Outlet />
-            </SocketProvider>
-          </ProtectedRoute>,
-        children: [
-          {
-            element: <SidebarsLayout />,
-            children: [
-              {
-                index: true,
-                element: <div>Home Layout</div>
-              },
-              {
-                path: searchPageRoute,
-                element: <SearchUsersLayout />
-              }
-            ]
-          },
-        ]
-      }
     ]
   }
 ]);

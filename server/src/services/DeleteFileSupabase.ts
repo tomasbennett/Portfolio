@@ -1,66 +1,66 @@
-import { prisma } from "../../lib/prisma";
-import { supabase } from "../../lib/client";
-import { ICustomErrorResponse } from "../../../shared/features/api/models/APIErrorResponse";
+// import { prisma } from "../../lib/prisma";
+// import { supabase } from "../../lib/client";
+// import { ICustomErrorResponse } from "../../../shared/features/api/models/APIErrorResponse";
 
 
-export async function deleteSupaBaseFile(
-    fileId: string | null
-): Promise<ICustomErrorResponse | { ok: true }> {
+// export async function deleteSupaBaseFile(
+//     fileId: string | null
+// ): Promise<ICustomErrorResponse | { ok: true }> {
     
-    if (!fileId) {
-        return {
-            ok: false,
-            status: 400,
-            message: "File ID is null"
-        };
-    }
+//     if (!fileId) {
+//         return {
+//             ok: false,
+//             status: 400,
+//             message: "File ID is null"
+//         };
+//     }
 
-    try {
+//     try {
 
 
-        const fileRecord = await prisma.files.delete({
-            where: { id: fileId },
-            select: { supabaseFileId: true }
-        });
+//         const fileRecord = await prisma.files.delete({
+//             where: { id: fileId },
+//             select: { supabaseFileId: true }
+//         });
 
-        if (!fileRecord) {
-            return {
-                ok: false,
-                status: 404,
-                message: "File not found"
-            };
-        }
+//         if (!fileRecord) {
+//             return {
+//                 ok: false,
+//                 status: 404,
+//                 message: "File not found"
+//             };
+//         }
 
-        const { error } = await supabase
-            .storage
-            .from(process.env.SUPABASE_BUCKET_NAME!)
-            .remove([fileRecord.supabaseFileId]);
+//         const { error } = await supabase
+//             .storage
+//             .from(process.env.SUPABASE_BUCKET_NAME!)
+//             .remove([fileRecord.supabaseFileId]);
 
-        if (error) {
-            return {
-                ok: false,
-                status: 500,
-                message: error.message
-            };
-        }
+//         if (error) {
+//             return {
+//                 ok: false,
+//                 status: 500,
+//                 message: error.message
+//             };
+//         }
 
-        return { ok: true };
+//         return { ok: true };
 
-    } catch (error) {
+//     } catch (error) {
 
-        if (error instanceof Error) {
-            return {
-                ok: false,
-                status: 500,
-                message: error.message
-            };
-        }
+//         if (error instanceof Error) {
+//             return {
+//                 ok: false,
+//                 status: 500,
+//                 message: error.message
+//             };
+//         }
 
-        return {
-            ok: false,
-            status: 500,
-            message: "Unknown error occurred whilst deleting file from Supabase!!!"
-        }
-    }
+//         return {
+//             ok: false,
+//             status: 500,
+//             message: "Unknown error occurred whilst deleting file from Supabase!!!"
+//         }
+//     }
 
-}
+// }

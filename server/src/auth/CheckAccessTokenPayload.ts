@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken";
 import { ICustomErrorResponse } from "../../../shared/features/api/models/APIErrorResponse";
 import { SOCKET_INVALID_ACCESS_TOKEN_MESSAGE, expiredAccessTokenStatus } from "../../../shared/features/auth/constants";
 import { prisma } from "../../lib/prisma";
-import { GenerateSupabasePublicURL } from "../services/SupabaseGeneratePublicURL";
+// import { GenerateSupabasePublicURL } from "../services/SupabaseGeneratePublicURL";
 import { IAuthUserInfo } from "../../../shared/features/auth/models/IAuthUserInfo";
 
 
@@ -53,17 +53,17 @@ export async function CheckAccessTokenPayload(header: string | undefined): Promi
         }
 
         if (user.profileImg?.supabaseFileId) {
-            const publicUserUrl = await GenerateSupabasePublicURL([user.profileImg.supabaseFileId]);
+            // const publicUserUrl = await GenerateSupabasePublicURL([user.profileImg.supabaseFileId]);
 
-            if (!publicUserUrl.ok) {
-                return {
-                    ok: false,
-                    status: 500,
-                    message: "Failed to generate public URL for user profile image!!!"
-                };
-            }
+            // if (!publicUserUrl.ok) {
+            //     return {
+            //         ok: false,
+            //         status: 500,
+            //         message: "Failed to generate public URL for user profile image!!!"
+            //     };
+            // }
 
-            user.profileImg.supabaseFileId = publicUserUrl.supabasePublicURLs[0];
+            // user.profileImg.supabaseFileId = publicUserUrl.supabasePublicURLs[0];
         }
 
 

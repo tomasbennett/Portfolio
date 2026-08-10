@@ -1,285 +1,285 @@
-import { Prisma, User } from "@prisma/client";
-import { NextFunction, Router } from "express";
-import { Request, Response } from "express";
-import { prisma } from "../../lib/prisma";
-
-import bcrypt from "bcrypt";
-import crypto from "crypto";
-
-import { ensureJWTAuthentication } from "../auth/ensureJWTAuthentication";
-import { ICustomSuccessMessage } from "../../../shared/features/api/models/APISuccessResponse";
-import { ILoginForm, ISignInError, ISuccessResSignIn } from "../../../shared/features/auth/models/ILoginSchema";
-import { environment } from "../../../shared/constants";
-import { issueSignedInResponse } from "../auth/IssueSignedInResponse";
-import { ICustomErrorResponse } from "../../../shared/features/api/models/APIErrorResponse";
-import { refreshTokenCookieKey } from "../constants/constants";
-import upload from "../multer/multer";
-import { supabase } from "../../lib/client";
-import { USER_PROFILE_IMG_FILE_KEY } from "../../../shared/features/auth/constants";
-import { GenerateSupabasePublicURL } from "../services/SupabaseGeneratePublicURL";
-import { allowedImgTypes } from "../../../shared/features/files/constants";
-import { usernamePasswordSchema } from "../../../shared/features/auth/models/IUsernamePassword";
-
-
-
-export const router = Router();
-
-
-router.post("/login",
-    async (req: Request<{}, {}, ILoginForm>, res: Response<ISignInError | ISuccessResSignIn>, next: NextFunction) => {
-        const { username, password } = req.body;
-
-        const usernameResult = usernamePasswordSchema.safeParse(username);
-        if (!usernameResult.success) {
-            return res.status(400).json({
-                message: usernameResult.error.issues[0].message,
-                inputType: "username"
-            });
-
-        }
-
-        const passwordResult = usernamePasswordSchema.safeParse(password);
-        if (!passwordResult.success) {
-            return res.status(400).json({
-                message: passwordResult.error.issues[0].message,
-                inputType: "password"
-            });
-        }
+// import { Prisma, User } from "@prisma/client";
+// import { NextFunction, Router } from "express";
+// import { Request, Response } from "express";
+// import { prisma } from "../../lib/prisma";
+
+// import bcrypt from "bcrypt";
+// import crypto from "crypto";
+
+// import { ensureJWTAuthentication } from "../auth/ensureJWTAuthentication";
+// import { ICustomSuccessMessage } from "../../../shared/features/api/models/APISuccessResponse";
+// import { ILoginForm, ISignInError, ISuccessResSignIn } from "../../../shared/features/auth/models/ILoginSchema";
+// import { environment } from "../../../shared/constants";
+// import { issueSignedInResponse } from "../auth/IssueSignedInResponse";
+// import { ICustomErrorResponse } from "../../../shared/features/api/models/APIErrorResponse";
+// import { refreshTokenCookieKey } from "../constants/constants";
+// import upload from "../multer/multer";
+// // import { supabase } from "../../lib/client";
+// import { USER_PROFILE_IMG_FILE_KEY } from "../../../shared/features/auth/constants";
+// import { GenerateSupabasePublicURL } from "../services/SupabaseGeneratePublicURL";
+// import { allowedImgTypes } from "../../../shared/features/files/constants";
+// import { usernamePasswordSchema } from "../../../shared/features/auth/models/IUsernamePassword";
+
+
+
+// export const router = Router();
+
+
+// router.post("/login",
+//     async (req: Request<{}, {}, ILoginForm>, res: Response<ISignInError | ISuccessResSignIn>, next: NextFunction) => {
+//         const { username, password } = req.body;
+
+//         const usernameResult = usernamePasswordSchema.safeParse(username);
+//         if (!usernameResult.success) {
+//             return res.status(400).json({
+//                 message: usernameResult.error.issues[0].message,
+//                 inputType: "username"
+//             });
+
+//         }
+
+//         const passwordResult = usernamePasswordSchema.safeParse(password);
+//         if (!passwordResult.success) {
+//             return res.status(400).json({
+//                 message: passwordResult.error.issues[0].message,
+//                 inputType: "password"
+//             });
+//         }
 
 
-        try {
-            const user = await prisma.user.findUnique({
-                where: {
-                    username
-                },
-                include: {
-                    profileImg: {
-                        select: {
-                            supabaseFileId: true,
-                        }
-                    }
-                }
-            });
+//         try {
+//             const user = await prisma.user.findUnique({
+//                 where: {
+//                     username
+//                 },
+//                 include: {
+//                     profileImg: {
+//                         select: {
+//                             supabaseFileId: true,
+//                         }
+//                     }
+//                 }
+//             });
 
-            if (!user) {
-                const errorResponse: ISignInError = {
-                    message: "Invalid username!!!",
-                    inputType: "username"
-                };
-                return res.status(400).json(errorResponse);
-            }
+//             if (!user) {
+//                 const errorResponse: ISignInError = {
+//                     message: "Invalid username!!!",
+//                     inputType: "username"
+//                 };
+//                 return res.status(400).json(errorResponse);
+//             }
 
-            const isPasswordValid: boolean = await bcrypt.compare(password, user.password);
+//             const isPasswordValid: boolean = await bcrypt.compare(password, user.password);
 
-            if (!isPasswordValid) {
-                const errorResponse: ISignInError = {
-                    message: "Invalid password!!!",
-                    inputType: "password"
-                };
-                return res.status(400).json(errorResponse);
-            }
+//             if (!isPasswordValid) {
+//                 const errorResponse: ISignInError = {
+//                     message: "Invalid password!!!",
+//                     inputType: "password"
+//                 };
+//                 return res.status(400).json(errorResponse);
+//             }
 
-            if (user.profileImg?.supabaseFileId) {
-                const generatedUrlResult = await GenerateSupabasePublicURL([user.profileImg.supabaseFileId]);
+//             if (user.profileImg?.supabaseFileId) {
+//                 const generatedUrlResult = await GenerateSupabasePublicURL([user.profileImg.supabaseFileId]);
 
-                if (!generatedUrlResult.ok) {
-                    return res.status(500).json({
-                        message: generatedUrlResult.error,
-                        inputType: "root"
-                    });
-                }
+//                 if (!generatedUrlResult.ok) {
+//                     return res.status(500).json({
+//                         message: generatedUrlResult.error,
+//                         inputType: "root"
+//                     });
+//                 }
 
-                user.profileImg.supabaseFileId = generatedUrlResult.supabasePublicURLs[0];
+//                 user.profileImg.supabaseFileId = generatedUrlResult.supabasePublicURLs[0];
 
-            }
+//             }
 
 
-            return await issueSignedInResponse({
-                userId: user.id,
-                username: user.username,
-                userProfileImgUrl: user.profileImg?.supabaseFileId
-            }, res);
+//             return await issueSignedInResponse({
+//                 userId: user.id,
+//                 username: user.username,
+//                 userProfileImgUrl: user.profileImg?.supabaseFileId
+//             }, res);
 
 
 
 
-        } catch (error) {
-            return next(error);
+//         } catch (error) {
+//             return next(error);
 
-        }
+//         }
 
-    });
+//     });
 
 
-router.post("/register", 
-    // upload.single(USER_PROFILE_IMG_FILE_KEY),
-    async (req: Request<{}, {}, ILoginForm>, res: Response<ISignInError | ISuccessResSignIn>, next: NextFunction) => {
-        const { username, password } = req.body;
-        const file = req.file;
+// router.post("/register", 
+//     // upload.single(USER_PROFILE_IMG_FILE_KEY),
+//     async (req: Request<{}, {}, ILoginForm>, res: Response<ISignInError | ISuccessResSignIn>, next: NextFunction) => {
+//         const { username, password } = req.body;
+//         const file = req.file;
 
-        const usernameResult = usernamePasswordSchema.safeParse(username);
-        if (!usernameResult.success) {
-            return res.status(400).json({
-                message: usernameResult.error.issues[0].message,
-                inputType: "username"
-            });
+//         const usernameResult = usernamePasswordSchema.safeParse(username);
+//         if (!usernameResult.success) {
+//             return res.status(400).json({
+//                 message: usernameResult.error.issues[0].message,
+//                 inputType: "username"
+//             });
 
-        }
+//         }
 
-        const passwordResult = usernamePasswordSchema.safeParse(password);
-        if (!passwordResult.success) {
-            return res.status(400).json({
-                message: passwordResult.error.issues[0].message,
-                inputType: "password"
-            });
-        }
+//         const passwordResult = usernamePasswordSchema.safeParse(password);
+//         if (!passwordResult.success) {
+//             return res.status(400).json({
+//                 message: passwordResult.error.issues[0].message,
+//                 inputType: "password"
+//             });
+//         }
 
-        try {
+//         try {
 
-            const hashedPassword = await bcrypt.hash(password, process.env.SALT_ROUNDS ? parseInt(process.env.SALT_ROUNDS) : 10);
+//             const hashedPassword = await bcrypt.hash(password, process.env.SALT_ROUNDS ? parseInt(process.env.SALT_ROUNDS) : 10);
 
 
-            // let profileImgId: string | undefined = undefined;
-            // let generatedProfileImgUrl: string | undefined = undefined;
+//             // let profileImgId: string | undefined = undefined;
+//             // let generatedProfileImgUrl: string | undefined = undefined;
 
-            // if (file) {
+//             // if (file) {
 
-            //     if (!allowedImgTypes.includes(file.mimetype)) {
-            //         return res.status(400).json({
-            //             message: "Invalid file type!!!",
-            //             inputType: USER_PROFILE_IMG_FILE_KEY
-            //         });
+//             //     if (!allowedImgTypes.includes(file.mimetype)) {
+//             //         return res.status(400).json({
+//             //             message: "Invalid file type!!!",
+//             //             inputType: USER_PROFILE_IMG_FILE_KEY
+//             //         });
 
-            //     }
+//             //     }
 
 
-            //     const { originalname, mimetype, size, buffer } = file;
+//             //     const { originalname, mimetype, size, buffer } = file;
 
-            //     const fileExt = originalname.split(".").pop();
-            //     const storagePath = `${crypto.randomUUID()}.${fileExt}`;
+//             //     const fileExt = originalname.split(".").pop();
+//             //     const storagePath = `${crypto.randomUUID()}.${fileExt}`;
 
-            //     const { error } = await supabase.storage
-            //         .from(process.env.SUPABASE_BUCKET_NAME || "uploads")
-            //         .upload(storagePath, buffer, {
-            //             contentType: mimetype,
-            //             upsert: false
-            //         });
+//             //     const { error } = await supabase.storage
+//             //         .from(process.env.SUPABASE_BUCKET_NAME || "uploads")
+//             //         .upload(storagePath, buffer, {
+//             //             contentType: mimetype,
+//             //             upsert: false
+//             //         });
 
-            //     if (error) throw error;
+//             //     if (error) throw error;
 
-            //     const prismaFile = await prisma.files.create({
-            //         data: {
-            //             filename: originalname,
-            //             filesize: size,
-            //             mimetype: mimetype,
-            //             supabaseFileId: storagePath,
-            //         }
-            //     });
+//             //     const prismaFile = await prisma.files.create({
+//             //         data: {
+//             //             filename: originalname,
+//             //             filesize: size,
+//             //             mimetype: mimetype,
+//             //             supabaseFileId: storagePath,
+//             //         }
+//             //     });
 
-            //     const generatedUrlResult = await GenerateSupabasePublicURL([storagePath]);
+//             //     const generatedUrlResult = await GenerateSupabasePublicURL([storagePath]);
 
-            //     if (!generatedUrlResult.ok) {
-            //         return res.status(500).json({
-            //             message: generatedUrlResult.error,
-            //             inputType: "root"
-            //         });
-            //     }
+//             //     if (!generatedUrlResult.ok) {
+//             //         return res.status(500).json({
+//             //             message: generatedUrlResult.error,
+//             //             inputType: "root"
+//             //         });
+//             //     }
 
-            //     generatedProfileImgUrl = generatedUrlResult.supabasePublicURLs[0];
-            //     profileImgId = prismaFile.id;
+//             //     generatedProfileImgUrl = generatedUrlResult.supabasePublicURLs[0];
+//             //     profileImgId = prismaFile.id;
 
-            // }
+//             // }
 
 
-            const user = await prisma.user.create({
-                data: {
-                    username,
-                    password: hashedPassword,
-                    // profileImgId
-                },
-            });
+//             const user = await prisma.user.create({
+//                 data: {
+//                     username,
+//                     password: hashedPassword,
+//                     // profileImgId
+//                 },
+//             });
 
 
 
-            await issueSignedInResponse({
-                userId: user.id,
-                username: user.username,
-                userProfileImgUrl: undefined
-            }, res);
+//             await issueSignedInResponse({
+//                 userId: user.id,
+//                 username: user.username,
+//                 userProfileImgUrl: undefined
+//             }, res);
 
 
 
-        } catch (error: unknown) {
-            if (error instanceof Prisma.PrismaClientKnownRequestError) {
-                if (error.code === "P2002") {
-                    return res.status(400).json({
-                        message: "Username already exists",
-                        inputType: "username"
-                    });
+//         } catch (error: unknown) {
+//             if (error instanceof Prisma.PrismaClientKnownRequestError) {
+//                 if (error.code === "P2002") {
+//                     return res.status(400).json({
+//                         message: "Username already exists",
+//                         inputType: "username"
+//                     });
 
-                }
+//                 }
 
-            }
+//             }
 
-            return next(error);
+//             return next(error);
 
-        }
-    });
+//         }
+//     });
 
 
-router.delete("/logout",
-    ensureJWTAuthentication,
-    async (req: Request, res: Response<ICustomErrorResponse | ICustomSuccessMessage>, next: NextFunction) => {
-        const refreshToken: string | undefined = req.cookies?.refreshToken;
+// router.delete("/logout",
+//     ensureJWTAuthentication,
+//     async (req: Request, res: Response<ICustomErrorResponse | ICustomSuccessMessage>, next: NextFunction) => {
+//         const refreshToken: string | undefined = req.cookies?.refreshToken;
 
-        if (!refreshToken) {
-            return res.status(400).json({
-                message: "No refresh token provided!!!",
-                ok: false,
-                status: 400
-            });
-        }
+//         if (!refreshToken) {
+//             return res.status(400).json({
+//                 message: "No refresh token provided!!!",
+//                 ok: false,
+//                 status: 400
+//             });
+//         }
 
-        try {
+//         try {
 
-            const tokenHash = crypto
-                .createHash("sha256")
-                .update(refreshToken)
-                .digest("hex");
+//             const tokenHash = crypto
+//                 .createHash("sha256")
+//                 .update(refreshToken)
+//                 .digest("hex");
 
-            const deletedRefreshToken = await prisma.refreshToken.delete({
-                where: {
-                    hashedToken: tokenHash
-                }
-            });
+//             const deletedRefreshToken = await prisma.refreshToken.delete({
+//                 where: {
+//                     hashedToken: tokenHash
+//                 }
+//             });
 
-            res.clearCookie(refreshTokenCookieKey, {
-                httpOnly: true,
-                secure: environment === "PROD",
-                sameSite: environment === "PROD" ? "none" : "lax"
-            });
+//             res.clearCookie(refreshTokenCookieKey, {
+//                 httpOnly: true,
+//                 secure: environment === "PROD",
+//                 sameSite: environment === "PROD" ? "none" : "lax"
+//             });
 
-            return res.sendStatus(204);
+//             return res.sendStatus(204);
 
-        } catch (error) {
-            if (error instanceof Prisma.PrismaClientKnownRequestError) {
-                if (error.code === "P2025") {
-                    return res.status(400).json({
-                        message: "Refresh token not found for deletion!!!",
-                        ok: false,
-                        status: 400
-                    });
+//         } catch (error) {
+//             if (error instanceof Prisma.PrismaClientKnownRequestError) {
+//                 if (error.code === "P2025") {
+//                     return res.status(400).json({
+//                         message: "Refresh token not found for deletion!!!",
+//                         ok: false,
+//                         status: 400
+//                     });
 
-                }
+//                 }
 
-            }
+//             }
 
 
-            return next(error);
+//             return next(error);
 
-        }
+//         }
 
 
 
 
-    });
+//     });
