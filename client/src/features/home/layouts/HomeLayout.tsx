@@ -19,13 +19,6 @@ export function HomeLayout() {
         </li>
         <li>
             <Project 
-                title="Messaging App"
-                description="A messaging app built with React, Express, Typescript and Node.js."
-                githubUrl="https://github.com/tomasbennett/Messaging-App"
-            />
-        </li>
-        <li>
-            <Project 
                 title="Shopping Cart App"
                 description="A shopping cart app built with React, Express, Typescript and Node.js."
                 githubUrl="https://github.com/tomasbennett/Shopping-Cart-Project-Public"
@@ -33,16 +26,9 @@ export function HomeLayout() {
         </li>
         <li>
             <Project 
-                title="Blog App"
-                description="A blog app built with React, Express, Typescript and Node.js."
-                githubUrl="https://github.com/tomasbennett/Blog-API-Project"
-            />
-        </li>
-        <li>
-            <Project 
-                title="File Uploader App"
-                description="A file uploader app built with React, Express, Typescript and Node.js."
-                githubUrl="https://github.com/tomasbennett/File_Uploader"
+                title="Messaging App"
+                description="A messaging app built with React, Express, Typescript and Node.js."
+                githubUrl="https://github.com/tomasbennett/Messaging-App"
             />
         </li>
       </ul>
