@@ -1,0 +1,35 @@
+.outerContainer{
+    width: 100%;
+
+    overflow: hidden;
+
+    display: flex;
+    flex-direction: column;
+    row-gap: 1rem;
+
+
+}
+
+.aboutContainer{
+    width: 38rem;
+
+    line-height: 2rem;
+
+    font-weight: lighter;
+
+    .about{
+        
+    }
+}
+
+
+.carouselContainer{
+    flex-shrink: 0;
+
+    width: 100%;
+    height: 6rem;
+
+    background-color: white;
+
+    overflow: hidden;
+}

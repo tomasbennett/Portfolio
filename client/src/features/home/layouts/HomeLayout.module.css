@@ -1,0 +1,30 @@
+.homeLayout{
+    width: 100%;
+    height: 100%;
+
+    overflow: hidden;
+
+    padding: 4rem;
+
+
+    display: flex;
+    flex-direction: column;
+
+    row-gap: 3rem;
+
+
+    & > *{
+        flex-shrink: 0;
+
+        width: 100%;
+    }
+}
+
+
+.header{
+    margin: auto 0;
+}
+
+.floor{
+    margin-top: auto;
+}

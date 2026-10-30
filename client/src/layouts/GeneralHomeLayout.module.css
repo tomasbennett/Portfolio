@@ -1,4 +1,4 @@
-.backgroundContainer{
+.backgroundContainer {
   position: relative;
 
   flex: 1 1 0;
@@ -12,5 +12,12 @@
   background-repeat: repeat;
   background-size: 180px; */
 
-  background-color: var(--background-colour);
+  background: linear-gradient(to top,
+      /* rgb(98, 134, 146), */
+      rgb(124, 117, 124),
+      rgb(39, 53, 85),
+      rgb(17, 23, 37)
+    );
+
+
 }
