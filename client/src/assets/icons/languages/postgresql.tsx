@@ -1,4 +1,4 @@
-export function postgresql() {
+export function PostgreSQL() {
 
 
 

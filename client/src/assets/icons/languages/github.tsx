@@ -1,4 +1,4 @@
-export function github() {
+export function GitHub() {
 
 
 

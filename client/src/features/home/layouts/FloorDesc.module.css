@@ -5,7 +5,7 @@
 
     display: flex;
     flex-direction: column;
-    row-gap: 1rem;
+    row-gap: 1.5rem;
 
 
 }
@@ -27,9 +27,11 @@
     flex-shrink: 0;
 
     width: 100%;
-    height: 6rem;
+    height: 8rem;
 
-    background-color: white;
+    /* background-color: black; */
+
+    padding: .4rem 0;
 
     overflow: hidden;
 }

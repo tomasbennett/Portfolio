@@ -1,4 +1,4 @@
-export function blender() {
+export function Blender() {
 
     //xlink:href="#blender-original-wordmark-a" 
 

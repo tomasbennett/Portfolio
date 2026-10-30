@@ -1,4 +1,4 @@
-export function inkscape() {
+export function Inkscape() {
     return (
 
         //xlink:href="#inkscape-original-wordmark-a"

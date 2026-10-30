@@ -1,4 +1,4 @@
-export function npm() {
+export function NPM() {
 
     //fill="#cb3837"
 

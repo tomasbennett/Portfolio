@@ -1,4 +1,4 @@
-export function postman() {
+export function Postman() {
 
     //style="fill:#ff6c37"
 

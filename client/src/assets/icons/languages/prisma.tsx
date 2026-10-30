@@ -1,4 +1,4 @@
-export function prisma() {
+export function Prisma() {
     return (
         <>
 
