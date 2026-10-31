@@ -21,6 +21,7 @@ export function Contacts() {
                 <div className={styles.upperContainer}>
 
                     <div className={styles.leftSide}>
+                        
                         <h1 className={styles.titleContainer}>
 
                             <span className={styles.title}>

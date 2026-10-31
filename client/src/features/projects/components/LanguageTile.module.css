@@ -1,13 +1,13 @@
 .outerContainer{
     flex-shrink: 0;
 
-    height: 4rem;
+    height: 3.8rem;
 
     border-radius: .5rem;
 
     display: flex;
     align-items: center;
-    column-gap: .5rem;
+    column-gap: .8rem;
 
     padding: .8rem 1rem;
 

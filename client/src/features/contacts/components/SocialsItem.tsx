@@ -17,7 +17,8 @@ export function SocialsItem({
     return (
         <>
         
-            <a target="_blank" rel="noopener noreferrer" href={href} className={styles.outerContainer}>
+            <a target="_blank" rel="noopener noreferrer" href={href} 
+                className={styles.outerContainer}>
 
                 <div className={styles.svgContainer}>
                     {svg}

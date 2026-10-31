@@ -1,0 +1,53 @@
+.outerContainer{
+    width: 100%;
+
+    display: flex;
+    align-items: center;
+    column-gap: .5rem;
+
+    overflow: hidden;
+
+    text-decoration: none;
+
+    fill: white;
+
+    transition: transform .2s linear, color .2s linear;
+
+}
+
+.outerContainer:hover{
+    color: var(--contact-link-colour);
+
+    fill: var(--contact-link-colour);
+
+    transform: translate(.6rem);
+}
+
+
+
+
+.svgContainer{
+    flex-shrink: 0;
+    
+    
+    height: 2rem;
+    aspect-ratio: 1;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    overflow: hidden;
+
+    & > svg{
+        width: 100%;
+        height: 100%;
+
+        fill: inherit;
+    }
+}
+
+
+.nameContainer{
+    flex-shrink: 0;
+}

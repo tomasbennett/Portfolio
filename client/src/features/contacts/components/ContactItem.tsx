@@ -15,19 +15,21 @@ export function ContactItem({
 
     return (
         <>
-        
+
             <div className={styles.outerContainer}>
 
                 <p className={styles.keyContainer}>
                     <span className={styles.key}>
-                        {item}
+                        {
+                            `${item}:`
+                        }
                     </span>
                 </p>
 
                 {
-                    isClickable ? 
+                    isClickable ?
                         <a className={`${styles.clickable} ${styles.valueContainer}`} target="_blank" rel="noopener noreferrer" href={href}>
-                            
+
 
                             <span className={styles.value}>
                                 {value}
@@ -38,7 +40,7 @@ export function ContactItem({
                         </a>
 
 
-                    :
+                        :
 
                         <div className={`${styles.unclickable} ${styles.valueContainer}`}>
                             <span className={styles.value}>
@@ -56,13 +58,13 @@ export function ContactItem({
 
 
             </div>
-        
-        
-        
-        
-        
-        
-        
+
+
+
+
+
+
+
         </>
     )
 

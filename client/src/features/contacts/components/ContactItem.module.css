@@ -1,0 +1,23 @@
+.outerContainer{
+    width: 100%;
+
+    display: flex;
+    column-gap: .5rem;
+
+    overflow: hidden;
+}
+
+.clickable{
+    text-decoration: none;
+
+    cursor: pointer;
+
+    transition: transform .2s linear, color .2s linear;
+}
+
+
+.clickable:hover{
+    color: var(--contact-link-colour);
+
+    transform: translate(.6rem);
+}
