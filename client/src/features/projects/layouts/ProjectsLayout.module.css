@@ -1,6 +1,6 @@
 .outerContainer{
 
-    
+
     width: 100%;
 
     overflow: hidden;
@@ -14,7 +14,44 @@
 
 
 .headerContainer{
+    flex-shrink: 0;
+
     font-size: var(--title-font-size);
 
     font-weight: lighter;
+}
+
+
+
+.projList{
+    flex-shrink: 0;
+
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+
+
+}
+
+
+.projContainer{
+    --column-gap: 2rem;
+
+    flex-shrink: 0;
+
+    width: 100%;
+    height: 100dvh;
+
+    padding: 5rem 0;
+
+    overflow: hidden;
+
+    display: flex;
+    
+    column-gap: var(--column-gap);
+}
+
+.projContainer:nth-child(even){
+    flex-direction: row-reverse;
 }

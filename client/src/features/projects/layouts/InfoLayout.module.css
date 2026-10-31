@@ -1,0 +1,89 @@
+.outerContainer{
+    flex: 1 1 0;
+
+    height: 100%;
+
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    row-gap: 3rem;
+
+
+    overflow: hidden;
+
+    font-weight: lighter;
+}
+
+
+
+.titleContainer{
+
+    font-weight: inherit;
+
+    font-size: var(--subsection-title-font-size);
+    
+    color: var(--subsection-title-colour);
+}
+
+
+
+.languageList{
+    width: 100%;
+
+    overflow: hidden;
+
+    display: flex;
+    flex-wrap: wrap;
+    column-gap: .8rem;
+
+    row-gap: .5rem;
+}
+
+.infoContainer{
+    flex-shrink: 0;
+
+    font-size: 1.9rem;
+    font-weight: lighter;
+
+
+    .info{
+        line-height: 2.2rem;
+    }
+}
+
+
+.linkBtnContainer{
+    --height: 10rem;
+    --gap: 1rem;
+
+    width: 100%;
+    overflow: hidden;
+
+    display: flex;
+    flex-direction: column;
+    row-gap: var(--gap);
+
+    .upperContainer{
+        flex-shrink: 0;
+
+        width: 100%;
+
+        overflow: hidden;
+
+        display: flex;
+
+
+    }
+
+    .lowerContainer{
+        flex-shrink: 0;
+
+        width: 100%;
+
+        overflow: hidden;
+
+        display: flex;
+        column-gap: var(--gap);
+    }
+}

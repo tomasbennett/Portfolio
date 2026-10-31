@@ -54,6 +54,7 @@
   --section-padding: 4rem;
   --subsection-title-font-size: 3rem;
   --subsection-title-colour: rgb(180, 180, 180);
+  --card-black-bcg: rgb(13, 13, 13);
 
 
   font-size: 62.5%;
@@ -71,6 +72,7 @@
   color: inherit;
   font-size: inherit;
   font-family: inherit;
+  font-weight: inherit;
 
   box-sizing: border-box;
 }
@@ -96,6 +98,8 @@ body {
   height: 100%;
 
   overflow: hidden;
+
+  font-weight: lighter;
 }
 
 

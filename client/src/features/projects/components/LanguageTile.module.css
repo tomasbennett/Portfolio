@@ -1,0 +1,41 @@
+.outerContainer{
+    flex-shrink: 0;
+
+    height: 4rem;
+
+    border-radius: .5rem;
+
+    display: flex;
+    align-items: center;
+    column-gap: .5rem;
+
+    padding: .8rem 1rem;
+
+    background-color: var(--card-black-bcg);
+
+
+    overflow: hidden;
+}
+
+
+.svgContainer{
+    flex-shrink: 0;
+
+    height: 100%;
+    aspect-ratio: 1;
+
+    overflow: hidden;
+
+    & > svg{
+        width: 100%;
+        height: 100%;
+
+        object-fit: contain;
+    }
+}
+
+.nameContainer{
+    flex-shrink: 0;
+
+    font-size: 1.4rem;
+}

@@ -56,7 +56,7 @@
 
     /* background-color: rgb(105, 105, 105); */
 
-    background-color: rgb(13, 13, 13);
+    background-color: var(--card-black-bcg);
 
     .svgContainer{
         height: 3rem;
@@ -81,7 +81,7 @@
 
 
 
-            fill: black;
+            fill: var(--card-black-bcg);
         }
     }
 

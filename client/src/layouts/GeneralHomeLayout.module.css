@@ -6,7 +6,7 @@
 
   background-color: var(--general-bcg-colour);
 
-  overflow: hidden;
+  overflow-y: auto;
 
   /* background-image: url("../assets/cube-night-sky.jpg");
   background-repeat: repeat;
