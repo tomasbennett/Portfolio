@@ -1,3 +1,4 @@
+import { Contacts } from "../../contacts/layouts/Contacts";
 import { ProjectsLayout } from "../../projects/layouts/ProjectsLayout";
 import { Title } from "../components/Title";
 import { FloorDesc } from "./FloorDesc";
@@ -34,6 +35,9 @@ export function HomeLayout() {
         <ProjectsLayout />
 
       </div>
+
+    <Contacts />
+
 
     </div>
   );
