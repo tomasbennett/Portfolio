@@ -11,16 +11,16 @@
 
 
 .nameContainer{
-    font-size: 3rem;
+    font-size: var(--subsection-title-font-size);
 
     font-weight: lighter;
 
-    color: rgb(180, 180, 180);
+    color: var(--subsection-title-colour);
 }
 
 
 .titleContainer{
-    font-size: 6rem;
+    font-size: var(--title-font-size);
     font-weight: lighter;
 }
 

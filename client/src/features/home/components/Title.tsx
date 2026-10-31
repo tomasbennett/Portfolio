@@ -21,7 +21,7 @@ export function Title() {
 
                 </h2>
 
-                <h1 className={styles.titleContainer}>
+                <h1 className={`${styles.titleContainer}`}>
 
                     <span className={styles.title}>
                         Portfolio

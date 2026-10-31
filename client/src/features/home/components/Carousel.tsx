@@ -33,9 +33,9 @@ export function Carousel() {
             <Item svg={<NPM />} />
             <Item svg={<TypeScript />} className={styles.ts} />
             <Item svg={<Prisma />} className={styles.prisma} />
-            <Item svg={<WebPack />} />
+            <Item svg={<WebPack />} className={styles.webpack} />
 
-            <Item svg={<Blender />} />
+            <Item svg={<Blender />} className={styles.blender} />
             <Item svg={<CSS />} className={styles.css} />
             <Item svg={<Express />} />
             <Item svg={<GIT />} className={styles.git} />
@@ -55,18 +55,6 @@ export function Carousel() {
             <div className={styles.outerContainer}>
 
                 <div className={styles.innerContainer}>
-
-                    {/* {
-                        Array.from({ length: 2 }, (_, indx) => {
-                            return (
-                                <React.Fragment key={indx}>
-                                    {
-                                        items
-                                    }
-                                </React.Fragment>
-                            )
-                        })
-                    } */}
 
                     <div className={styles.sequence}>
                         {items}

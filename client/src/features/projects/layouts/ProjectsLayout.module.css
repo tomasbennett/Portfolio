@@ -1,0 +1,20 @@
+.outerContainer{
+
+    
+    width: 100%;
+
+    overflow: hidden;
+
+    display: flex;
+    flex-direction: column;
+    row-gap: 2rem;
+
+
+}
+
+
+.headerContainer{
+    font-size: var(--title-font-size);
+
+    font-weight: lighter;
+}

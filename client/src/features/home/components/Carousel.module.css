@@ -1,6 +1,8 @@
-.outerContainer{
+.outerContainer {
     width: 100%;
     height: 100%;
+
+    padding: .8rem 0;
 
 
     overflow: hidden;
@@ -9,21 +11,17 @@
     align-items: center;
     column-gap: 2.5rem; */
 
-    -webkit-mask: linear-gradient(
-        90deg,
-        transparent,
-        white 20%,
-        white 80%,
-        transparent
-    );
+    -webkit-mask: linear-gradient(90deg,
+            transparent,
+            white 20%,
+            white 80%,
+            transparent);
 
-    mask: linear-gradient(
-        90deg,
-        transparent,
-        white 20%,
-        white 80%,
-        transparent
-    );
+    mask: linear-gradient(90deg,
+            transparent,
+            white 20%,
+            white 80%,
+            transparent);
 }
 
 /* .innerContainer{
@@ -47,7 +45,7 @@
     width: max-content;
     height: 100%;
 
-    animation: moveLeft 30s linear infinite;
+    animation: moveLeft 40s linear infinite;
 }
 
 .sequence {
@@ -73,20 +71,20 @@
 
 
 .css,
-.html{
+.html {
     padding: 1rem;
 
     filter: grayscale(100%) brightness(1.4);
 }
 
-.git{
+.git {
     filter: grayscale(100%) brightness(2.4);
 
     padding: 1rem;
 }
 
 
-.github{
+.github {
     filter: grayscale(100%);
 
     padding: .5rem;
@@ -99,69 +97,87 @@
     padding: .5rem;
 } */
 
-.inkscape{
+.inkscape {
     filter: grayscale(100%) brightness(1.2);
 
-    /* padding: .2rem; */
+    padding: .5rem;
 }
 
-.js{
+.js {
     filter: grayscale(100%) brightness(1.8);
 
-    
+
 }
 
 .js,
-.ts{
+.ts {
     padding: 1rem;
 }
 
 
 
-.jest{
+.jest {
     filter: grayscale(100%) brightness(3);
 
-    padding: 1.6rem;
+    padding: 1rem;
 }
 
 
-.nodejs{
+.nodejs {
     filter: grayscale(100%) brightness(1);
 
     /* padding: .5rem; */
 }
 
 
-.postgresql{
+.postgresql {
     filter: grayscale(100%) brightness(1);
 
-    /* padding: .5rem; */
+    padding: .5rem;
 }
 
-.postman{
-    filter: grayscale(100%)  brightness(1.3);
+.postman {
+    filter: grayscale(100%) brightness(1.3);
 
-    /* padding: .5rem; */
+    padding: .5rem;
 }
 
 
-.prisma{
+.prisma {
     filter: grayscale(100%);
 
-    /* padding: .5rem; */
+    padding: .5rem;
     /* fill: grey; */
 }
 
 
-.react{
+.react {
     filter: grayscale(100%) brightness(5);
 
     padding: .8rem;
 }
 
 
-.ts{
+.ts {
     filter: grayscale(100%) brightness(100);
 
-    
+
+}
+
+
+.blender {
+    padding: .5rem;
+
+    filter: grayscale(100%) brightness(2.2);
+
+    fill: grey;
+
+}
+
+.webpack {
+    padding: .5rem;
+
+    filter: grayscale(100%) brightness(2.2);
+
+    fill: gray;
 }

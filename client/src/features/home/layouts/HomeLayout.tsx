@@ -1,3 +1,4 @@
+import { ProjectsLayout } from "../../projects/layouts/ProjectsLayout";
 import { Title } from "../components/Title";
 import { FloorDesc } from "./FloorDesc";
 import styles from "./HomeLayout.module.css";
@@ -8,10 +9,12 @@ import styles from "./HomeLayout.module.css";
 export function HomeLayout() {
 
   return (
-    <div className={styles.homeLayout}>
+    <div className={styles.outerContainer}>
+
+      <div className={styles.homeLayout}>
 
         <div className={styles.header}>
-          
+
           <Title />
 
         </div>
@@ -23,6 +26,14 @@ export function HomeLayout() {
 
         </div>
 
+      </div>
+
+
+      <div className={styles.projectContainer}>
+
+        <ProjectsLayout />
+
+      </div>
 
     </div>
   );
