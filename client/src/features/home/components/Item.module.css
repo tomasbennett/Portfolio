@@ -1,5 +1,8 @@
 .outerContainer{
-    flex-shrink: 0;
+    /* flex-shrink: 0; */
+    flex: 0 0 auto;
+
+    /* min-width: 0; */
 
     height: 100%;
     /* width: auto; */

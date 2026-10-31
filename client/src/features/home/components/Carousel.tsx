@@ -1,3 +1,4 @@
+import React from "react";
 import { Blender } from "../../../assets/icons/languages/blender";
 import { CSS } from "../../../assets/icons/languages/css";
 import { Express } from "../../../assets/icons/languages/express";
@@ -22,34 +23,66 @@ import { Item } from "./Item";
 
 export function Carousel() {
 
+    const items = (
+        <>
+            <Item svg={<HTML />} className={styles.html} />
+            <Item svg={<NodeJs />} className={styles.nodejs} />
+            <Item svg={<GitHub />} className={styles.github} />
+            <Item svg={<Postman />} className={styles.postman} />
+            <Item svg={<REACT />} className={styles.react} />
+            <Item svg={<NPM />} />
+            <Item svg={<TypeScript />} className={styles.ts} />
+            <Item svg={<Prisma />} className={styles.prisma} />
+            <Item svg={<WebPack />} />
+
+            <Item svg={<Blender />} />
+            <Item svg={<CSS />} className={styles.css} />
+            <Item svg={<Express />} />
+            <Item svg={<GIT />} className={styles.git} />
+            <Item svg={<PostgreSQL />} className={styles.postgresql} />
+            <Item svg={<Inkscape />} className={styles.inkscape} />
+            <Item svg={<JS />} className={styles.js} />
+            <Item svg={<JESTjs />} className={styles.jest} />
+
+        </>
+    )
+
 
 
     return (
         <>
-        
+
             <div className={styles.outerContainer}>
 
-                <Item svg={<HTML />} className={styles.html}/>
-                <Item svg={<JESTjs />} className={styles.jest} />
-                <Item svg={<NodeJs />} className={styles.nodejs} />
-                <Item svg={<Postman />} className={styles.postman} />
-                <Item svg={<REACT />} />
-                <Item svg={<NPM />} />
-                <Item svg={<TypeScript />} className={styles.ts} />
-                <Item svg={<Prisma />} className={styles.prisma} />
-                <Item svg={<WebPack />} />
+                <div className={styles.innerContainer}>
 
-                <Item svg={<Blender />} />
-                <Item svg={<CSS />} className={styles.css} />
-                <Item svg={<Express />} />
-                <Item svg={<GIT />} className={styles.git} />
-                <Item svg={<PostgreSQL />} className={styles.postgresql} />
-                <Item svg={<GitHub />} className={styles.github} />
-                <Item svg={<Inkscape />} className={styles.inkscape} />
-                <Item svg={<JS />} className={styles.js} />
+                    {/* {
+                        Array.from({ length: 2 }, (_, indx) => {
+                            return (
+                                <React.Fragment key={indx}>
+                                    {
+                                        items
+                                    }
+                                </React.Fragment>
+                            )
+                        })
+                    } */}
+
+                    <div className={styles.sequence}>
+                        {items}
+                    </div>
+
+                    <div className={styles.sequence} aria-hidden="true">
+                        {items}
+                    </div>
+
+
+                </div>
+
+
 
             </div>
-        
+
         </>
     )
 }
