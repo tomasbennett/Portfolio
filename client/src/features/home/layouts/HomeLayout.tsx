@@ -36,7 +36,7 @@ export function HomeLayout() {
 
       </div>
 
-    <Contacts />
+      <Contacts />
 
 
     </div>
