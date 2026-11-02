@@ -1,4 +1,4 @@
-.outerContainer{
+.outerContainer {
 
 
     width: 100%;
@@ -9,12 +9,22 @@
     flex-direction: column;
     row-gap: 2rem;
 
+    padding: var(--section-padding) 0;
 
 }
 
 
-.headerContainer{
+.headerContainer {
     flex-shrink: 0;
+
+    max-width: var(--body-max-width);
+
+
+    width: 100%;
+
+    padding: 0 var(--section-padding);
+
+    margin: 0 auto;
 
     font-size: var(--title-font-size);
 
@@ -23,7 +33,7 @@
 
 
 
-.projList{
+.projList {
     flex-shrink: 0;
 
     width: 100%;
@@ -35,23 +45,101 @@
 }
 
 
-.projContainer{
+.projContainer {
     --column-gap: 2rem;
 
     flex-shrink: 0;
 
     width: 100%;
+
+    max-width: var(--body-max-width);
+
+    margin: 0 auto;
+
+
     height: 100dvh;
 
-    padding: 5rem 0;
+    padding: 5rem var(--section-padding);
 
-    overflow: hidden;
+    overflow: visible;
 
     display: flex;
-    
+
     column-gap: var(--column-gap);
 }
 
-.projContainer:nth-child(even){
+.projContainer[data-animation="waiting"] {
+    overflow: hidden;
+
+    opacity: 0;
+}
+
+.projContainer[data-animation="animating"] {
+    overflow: visible;
+}
+
+.projContainer[data-animation="loaded"] {
+    overflow: hidden;
+}
+
+.projContainer:nth-child(odd)[data-animation="animating"] {
+
+    &> :first-child {
+        animation: loadInFromLeft .8s linear;
+    }
+
+
+    &> :last-child {
+        animation: loadInFromRight .8s linear;
+    }
+
+}
+
+.projContainer:nth-child(odd) {
+    flex-direction: row;
+}
+
+.projContainer:nth-child(even) {
+
     flex-direction: row-reverse;
+}
+
+.projContainer:nth-child(even)[data-animation="animating"] {
+
+
+    &> :first-child {
+        animation: loadInFromRight .8s linear;
+    }
+
+    &> :last-child {
+        animation: loadInFromLeft .8s linear;
+    }
+}
+
+
+
+@keyframes loadInFromRight {
+    0% {
+        opacity: 0;
+        transform: translateX(4rem);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+
+@keyframes loadInFromLeft {
+    0% {
+        opacity: 0;
+        transform: translateX(-4rem);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateX(0);
+    }
+
 }

@@ -33,7 +33,7 @@ export function InfoLayout({
     return (
         <>
 
-            <div className={styles.outerContainer}>
+            <div className={`${styles.outerContainer}`}>
 
                 <h2 className={styles.titleContainer}>
 
@@ -118,9 +118,6 @@ export function InfoLayout({
 
 
             </div>
-
-
-
 
         </>
     )

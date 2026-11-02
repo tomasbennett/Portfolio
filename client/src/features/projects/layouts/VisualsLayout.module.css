@@ -9,6 +9,9 @@
     display: flex;
     column-gap: var(--column-gap);
 
+
+    /* animation: loadIn .8s ease-in-out; */
+
 }
 
 
@@ -78,3 +81,7 @@
         }
     }
 }
+
+
+
+

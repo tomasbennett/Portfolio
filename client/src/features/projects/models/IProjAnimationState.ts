@@ -1,0 +1,1 @@
+export type IProjAnimationState = "waiting" | "animating" | "loaded";

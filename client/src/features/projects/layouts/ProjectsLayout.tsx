@@ -22,12 +22,83 @@ import messagingAppGithubPage from "../../../assets/proj/img/messagingapp_github
 import shoppingCartHomePage from "../../../assets/proj/img/shoppingcart_homepage.png";
 import shoppingCartContentPage from "../../../assets/proj/img/shoppingcart_contentpage.png";
 import shoppingCartGithubPage from "../../../assets/proj/img/shoppingcart_github.png";
+import React, { useEffect, useState } from "react";
+import { IProjAnimationState } from "../models/IProjAnimationState";
+import { useScrollLoadIn } from "../../../hooks/useScrollLoadIn";
 
 
 
 export function ProjectsLayout() {
 
+    const [isOdinBookAnimating, setIsOdinBookAnimating] = useState<IProjAnimationState>("waiting");
+    const [isShoppingCartAnimating, setIsShoppingCartAnimating] = useState<IProjAnimationState>("waiting");
+    const [isMessagingAppAnimating, setIsMessagingAppAnimating] = useState<IProjAnimationState>("waiting");
 
+    const threshold: number = 0.4;
+
+    const { isVisible: isOdinBookVisible, elementRef: odinBookElementRef } = useScrollLoadIn({ threshold: threshold });
+    const { isVisible: isShoppingCartVisible, elementRef: shoppingCartElementRef } = useScrollLoadIn({ threshold: threshold });
+    const { isVisible: isMessagingAppVisible, elementRef: messagingAppElementRef } = useScrollLoadIn({ threshold: threshold });
+
+    const handleThresholdTrigger = (element: HTMLDivElement | null, isStateVisible: boolean, setAnimationState: React.Dispatch<React.SetStateAction<IProjAnimationState>>) => {
+        if (!element) {
+            return;
+        }
+
+        const handleAnimationEnd = () => {
+            setAnimationState("loaded");
+        };
+
+        if (isStateVisible) {
+            setAnimationState("animating");
+            
+            element.addEventListener("animationend", handleAnimationEnd);
+        }
+
+
+
+
+        return () => {
+            if (!element) {
+                return;
+            }
+
+            setAnimationState("waiting");
+            element.removeEventListener("animationend", handleAnimationEnd);
+        }
+
+    }
+
+
+    useEffect(() => {
+        const element = odinBookElementRef.current;
+
+        const returnFunc = handleThresholdTrigger(element, isOdinBookVisible, setIsOdinBookAnimating);
+
+
+
+        return returnFunc;
+
+    }, [isOdinBookVisible]);
+
+    useEffect(() => {
+
+        const element = shoppingCartElementRef.current;
+
+        const returnFunc = handleThresholdTrigger(element, isShoppingCartVisible, setIsShoppingCartAnimating);
+
+        return returnFunc;
+    }, [isShoppingCartVisible]);
+
+    useEffect(() => {
+
+        const element = messagingAppElementRef.current;
+
+        const returnFunc = handleThresholdTrigger(element, isMessagingAppVisible, setIsMessagingAppAnimating);
+
+        return returnFunc;
+
+    }, [isMessagingAppVisible]);
 
 
     return (
@@ -48,7 +119,7 @@ export function ProjectsLayout() {
 
                 <div className={styles.projList}>
 
-                    <div className={styles.projContainer}>
+                    <div ref={odinBookElementRef} data-animation={isOdinBookAnimating} className={styles.projContainer}>
 
                         <VisualsLayout
                             defMainContentImgSrc={odinBookContentPage}
@@ -56,12 +127,12 @@ export function ProjectsLayout() {
                             githubImgSrc={odinBookGithubPage}
                             contentVideoSrc={""} />
 
-                        <InfoLayout 
-                            title={"Odin Book"} 
-                            desc={"A social media type web application that utilises oauth 2.0 with PKCE and allows users to post and comment or reply to other users posts."} 
-                            livePreviewLink={"https://odin-book-9t7a.onrender.com"} 
-                            clientLink={"https://github.com/tomasbennett/Odin-Book/tree/main/client"} 
-                            serverLink={"https://github.com/tomasbennett/Odin-Book/tree/main/server"} 
+                        <InfoLayout
+                            title={"Odin Book"}
+                            desc={"A social media type web application that utilises oauth 2.0 with PKCE and allows users to post and comment or reply to other users posts."}
+                            livePreviewLink={"https://odin-book-9t7a.onrender.com"}
+                            clientLink={"https://github.com/tomasbennett/Odin-Book/tree/main/client"}
+                            serverLink={"https://github.com/tomasbennett/Odin-Book/tree/main/server"}
                             languages={[
                                 {
                                     name: "react",
@@ -91,7 +162,7 @@ export function ProjectsLayout() {
 
                     </div>
 
-                    <div className={styles.projContainer}>
+                    <div ref={shoppingCartElementRef} data-animation={isShoppingCartAnimating} className={styles.projContainer}>
 
                         <VisualsLayout
                             defMainContentImgSrc={shoppingCartContentPage}
@@ -99,10 +170,10 @@ export function ProjectsLayout() {
                             githubImgSrc={shoppingCartGithubPage}
                             contentVideoSrc={""} />
 
-                        <InfoLayout 
-                            title={"Shopping Cart"} 
-                            desc={"A template for a shopping cart project that accesses video game data from a JSON API and displays the results with sorting and filtering options."} 
-                            livePreviewLink={"https://shopping-cart-proj.netlify.app"} 
+                        <InfoLayout
+                            title={"Shopping Cart"}
+                            desc={"A template for a shopping cart project that accesses video game data from a JSON API and displays the results with sorting and filtering options."}
+                            livePreviewLink={"https://shopping-cart-proj.netlify.app"}
                             clientLink={"https://github.com/tomasbennett/Shopping-Cart-Project-Public"}
                             languages={[
                                 {
@@ -125,7 +196,7 @@ export function ProjectsLayout() {
 
                     </div>
 
-                    <div className={styles.projContainer}>
+                    <div ref={messagingAppElementRef} data-animation={isMessagingAppAnimating} className={styles.projContainer}>
 
                         <VisualsLayout
                             defMainContentImgSrc={messagingAppContentPage}
@@ -133,9 +204,9 @@ export function ProjectsLayout() {
                             githubImgSrc={messagingAppGithubPage}
                             contentVideoSrc={""} />
 
-                        <InfoLayout 
-                            title={"Messaging App"} 
-                            desc={"This project is a web based messaging app in which users can talk to one another in real time."} 
+                        <InfoLayout
+                            title={"Messaging App"}
+                            desc={"This project is a web based messaging app in which users can talk to one another in real time."}
                             clientLink={"https://github.com/tomasbennett/Messaging-App/tree/main/client"}
                             serverLink={"https://github.com/tomasbennett/Messaging-App/tree/main/server"}
                             languages={[

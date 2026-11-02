@@ -37,7 +37,17 @@ export function Title() {
 
                 </div>
 
-                <div className={styles.getInTouchContainer}>
+                <div onClick={() => {
+                    const contactSection = document.getElementById("background-container");
+
+                    if (contactSection) {
+                        contactSection.scrollTo({
+                            top: contactSection.scrollHeight,
+                            behavior: "smooth"
+                        });
+                    }
+                    
+                }} className={styles.getInTouchContainer}>
 
                     <div className={styles.svgContainer}>
 

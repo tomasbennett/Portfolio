@@ -27,7 +27,7 @@ export function VisualsLayout({
     return (
         <>
 
-            <div className={styles.outerContainer}>
+            <div className={`${styles.outerContainer}`}>
 
                 {/* <div className={styles.mainContentContainer}> */}
 
