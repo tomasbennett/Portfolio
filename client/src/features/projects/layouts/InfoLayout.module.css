@@ -18,6 +18,17 @@
     /* animation: loadIn 5s ease-in-out; */
 }
 
+.outerContainer.thinScreen{
+    width: 100%;
+
+    height: auto;
+
+    /* justify-content: ; */
+
+    row-gap: 1rem;
+
+    font-size: 1.5rem;
+}
 
 
 
@@ -42,11 +53,45 @@
     overflow: hidden;
 
     display: flex;
+    /* justify-content: center; */
+    /* flex-direction: row-reverse; */
     flex-wrap: wrap;
     column-gap: .8rem;
 
     row-gap: .5rem;
 }
+
+.languageList.odd{
+    flex-direction: row;
+}
+
+.languageList.even{
+    flex-direction: row-reverse;
+}
+
+
+.languageList.thinScreen{
+    flex-wrap: nowrap;
+    flex-direction: row;
+
+    overflow-x: auto;
+
+    & > :first-child{
+        margin-left: auto;
+    }
+
+    & > :last-child{
+        margin-right: auto;
+    }
+}
+
+
+
+
+
+
+
+
 
 .infoContainer{
     flex-shrink: 0;
@@ -54,15 +99,43 @@
     font-size: 1.9rem;
     font-weight: lighter;
 
+    overflow-y: auto;
+
+    max-height: 50%;
+
 
     .info{
         line-height: 2.2rem;
     }
 }
 
+.infoContainer.mediumScreen{
+    font-size: 1.8rem;
+
+    overflow-y: auto;
+
+    max-height: 20rem;
+
+    .info{
+        line-height: 2rem;
+    }
+}
+
+.infoContainer.thinScreen{
+    font-size: 1.6rem;
+
+    overflow-y: auto;
+
+    max-height: 11rem;
+
+    .info{
+        line-height: 1.8rem;
+    }
+}
+
 
 .linkBtnContainer{
-    --height: 10rem;
+    /* --height: 10rem; */
     --gap: 1rem;
 
     width: 100%;
@@ -93,5 +166,24 @@
 
         display: flex;
         column-gap: var(--gap);
+    }
+}
+
+
+.linkBtnContainer.thinScreen{
+    /* --height: 5rem; */
+    --gap: .5rem;
+
+    flex-direction: column;
+
+    margin: 0 auto;
+
+    max-width: 40rem;
+
+    /* row-gap: var(--gap); */
+
+
+    .lowerContainer{
+        /* column-gap: var(--gap); */
     }
 }

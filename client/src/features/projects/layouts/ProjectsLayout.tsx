@@ -25,6 +25,9 @@ import shoppingCartGithubPage from "../../../assets/proj/img/shoppingcart_github
 import React, { useEffect, useState } from "react";
 import { IProjAnimationState } from "../models/IProjAnimationState";
 import { useScrollLoadIn } from "../../../hooks/useScrollLoadIn";
+import { useMediaQuery } from "react-responsive";
+import { thinScreenMaxWidth, mediumScreenMaxWidth } from "../../../constants/screenDimensions";
+import { useAddScreenDimensionsClassNames } from "../../../hooks/useAddScreenDimensionsClassNames";
 
 
 
@@ -51,7 +54,7 @@ export function ProjectsLayout() {
 
         if (isStateVisible) {
             setAnimationState("animating");
-            
+
             element.addEventListener("animationend", handleAnimationEnd);
         }
 
@@ -100,6 +103,12 @@ export function ProjectsLayout() {
 
     }, [isMessagingAppVisible]);
 
+    const { 
+        addScreenDimensionsClassNames,
+        isWideScreen,
+        isThinScreen
+    } = useAddScreenDimensionsClassNames(styles);
+
 
     return (
         <>
@@ -119,7 +128,10 @@ export function ProjectsLayout() {
 
                 <div className={styles.projList}>
 
-                    <div ref={odinBookElementRef} data-animation={isOdinBookAnimating} className={styles.projContainer}>
+                    <div 
+                        ref={odinBookElementRef} 
+                        data-animation={isOdinBookAnimating} 
+                        className={addScreenDimensionsClassNames(styles.projContainer)}>
 
                         <VisualsLayout
                             defMainContentImgSrc={odinBookContentPage}
@@ -128,6 +140,7 @@ export function ProjectsLayout() {
                             contentVideoSrc={""} />
 
                         <InfoLayout
+                            direction="odd"
                             title={"Odin Book"}
                             desc={"A social media type web application that utilises oauth 2.0 with PKCE and allows users to post and comment or reply to other users posts."}
                             livePreviewLink={"https://odin-book-9t7a.onrender.com"}
@@ -162,7 +175,10 @@ export function ProjectsLayout() {
 
                     </div>
 
-                    <div ref={shoppingCartElementRef} data-animation={isShoppingCartAnimating} className={styles.projContainer}>
+                    <div 
+                        ref={shoppingCartElementRef} 
+                        data-animation={isShoppingCartAnimating} 
+                        className={addScreenDimensionsClassNames(styles.projContainer)}>
 
                         <VisualsLayout
                             defMainContentImgSrc={shoppingCartContentPage}
@@ -170,9 +186,16 @@ export function ProjectsLayout() {
                             githubImgSrc={shoppingCartGithubPage}
                             contentVideoSrc={""} />
 
+                            
+
                         <InfoLayout
+                            direction="even"
                             title={"Shopping Cart"}
-                            desc={"A template for a shopping cart project that accesses video game data from a JSON API and displays the results with sorting and filtering options."}
+                            desc={`
+                                A template for a shopping cart project that accesses video game data from a JSON API and displays the results with sorting and filtering options.
+                                Lorem ipsum dolor sit, amet consectetur adipisicing elit. Expedita, corporis tenetur. Quia quas voluptas eligendi repellat porro tempora mollitia ea cupiditate deleniti autem veritatis dolore, incidunt iste quasi, aut cumque? Maxime nisi voluptatibus recusandae ut rem atque, officiis ad magnam incidunt veniam aperiam eveniet explicabo hic non! Velit temporibus rem a consectetur porro iusto, nostrum tempora natus tempore aliquam. Debitis dolore perspiciatis voluptate minima doloribus sequi vel id? Accusantium totam aut doloribus, perspiciatis necessitatibus id veritatis accusamus debitis cum iste dicta dignissimos minima dolores commodi sequi. Quisquam reiciendis nisi, autem ipsum repellendus, accusantium iusto laborum dolorum qui veritatis eligendi neque?
+                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Distinctio optio facilis vitae nihil qui mollitia? Corrupti dolore nobis excepturi, inventore alias vero expedita harum vitae quia. Veritatis, iste repellendus rerum amet reprehenderit ea modi eius dignissimos facere. Iure iusto odit quasi quisquam tenetur dignissimos possimus quibusdam, veniam unde error, officiis provident, non nesciunt exercitationem explicabo atque fugiat labore autem! Quibusdam beatae distinctio ex, temporibus, reprehenderit nesciunt error perferendis modi cum omnis illum sit sapiente eius obcaecati! Nam minus corporis, exercitationem mollitia similique laborum saepe assumenda nulla eveniet! Recusandae, sint magnam quam quae, id excepturi saepe consectetur consequatur nemo culpa quo odio vero cumque velit voluptate pariatur, eaque commodi modi? Doloribus quas mollitia perspiciatis laborum culpa facere incidunt ad voluptatum aut sit nisi corrupti sequi, doloremque dolorem odit molestias expedita aspernatur! Veniam inventore nulla dolor consequatur sint veritatis. Voluptates dolor, magni illum dolorem rerum cupiditate accusantium est autem. Eos, repudiandae magnam laboriosam quaerat, voluptatum unde doloribus quos, exercitationem cum veniam praesentium natus nostrum harum iusto accusamus nam. Nemo excepturi ullam quaerat at asperiores quod sed, quas ratione dolorem atque doloremque voluptates ea impedit reprehenderit nam ipsum. Magnam est perferendis obcaecati maxime quisquam tenetur non aliquid explicabo, dicta vero laudantium impedit fugit!
+                                `}
                             livePreviewLink={"https://shopping-cart-proj.netlify.app"}
                             clientLink={"https://github.com/tomasbennett/Shopping-Cart-Project-Public"}
                             languages={[
@@ -196,7 +219,10 @@ export function ProjectsLayout() {
 
                     </div>
 
-                    <div ref={messagingAppElementRef} data-animation={isMessagingAppAnimating} className={styles.projContainer}>
+                    <div 
+                        ref={messagingAppElementRef}
+                        data-animation={isMessagingAppAnimating} 
+                        className={addScreenDimensionsClassNames(styles.projContainer)}>
 
                         <VisualsLayout
                             defMainContentImgSrc={messagingAppContentPage}
@@ -205,6 +231,7 @@ export function ProjectsLayout() {
                             contentVideoSrc={""} />
 
                         <InfoLayout
+                            direction="odd"
                             title={"Messaging App"}
                             desc={"This project is a web based messaging app in which users can talk to one another in real time."}
                             clientLink={"https://github.com/tomasbennett/Messaging-App/tree/main/client"}

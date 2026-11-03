@@ -1,5 +1,6 @@
 import React from "react";
 import styles from "./Link.module.css";
+import { useAddScreenDimensionsClassNames } from "../../../hooks/useAddScreenDimensionsClassNames";
 
 
 type ILinkProps = {
@@ -14,13 +15,19 @@ export function Link({
     text
 }: ILinkProps) {
 
-
+    const {
+        addScreenDimensionsClassNames,
+        isWideScreen,
+        isThinScreen
+    } = useAddScreenDimensionsClassNames(styles);
 
 
     return (
         <>
 
-            <a className={styles.link} rel="noopener noreferrer" target="_blank" href={href}>
+            <a 
+                className={addScreenDimensionsClassNames(styles.link)} 
+                rel="noopener noreferrer" target="_blank" href={href}>
 
                 <div className={styles.livePrevSVGContainer}>
 

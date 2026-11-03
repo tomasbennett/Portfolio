@@ -1,4 +1,6 @@
 .outerContainer{
+    --border-radius: 2rem;
+
     flex: 2 1 0;
 
     height: 100%;
@@ -14,6 +16,21 @@
 
 }
 
+.outerContainer.thinScreen{
+    width: 100%;
+
+    height: auto;
+}
+
+
+
+.outerContainer.mediumScreen{
+    --border-radius: 1.3rem;
+
+    column-gap: 0rem;
+}
+
+
 
 .imgDisplayContainer{
     flex: 1 1 0;
@@ -21,7 +38,7 @@
 
     overflow: hidden;
 
-    border-radius: 2rem;
+    border-radius: var(--border-radius);
 
     & > img{
         width: 100%;
@@ -50,7 +67,7 @@
         flex: 1 1 0;
         width: 100%;
 
-        border-radius: 2rem;
+        border-radius: var(--border-radius);
 
         overflow: hidden;
 
@@ -68,7 +85,7 @@
         flex: 1 1 0;
         width: 100%;
 
-        border-radius: 2rem;
+        border-radius: var(--border-radius);
 
         overflow: hidden;
 

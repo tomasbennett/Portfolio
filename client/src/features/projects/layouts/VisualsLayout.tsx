@@ -1,5 +1,8 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "./VisualsLayout.module.css";
+import { useMediaQuery } from "react-responsive";
+import { thinScreenMaxWidth, mediumScreenMaxWidth } from "../../../constants/screenDimensions";
+import { useAddScreenDimensionsClassNames } from "../../../hooks/useAddScreenDimensionsClassNames";
 
 type IVisualsLayoutProps = {
     defMainContentImgSrc: string;
@@ -23,16 +26,20 @@ export function VisualsLayout({
         setMainContent("video");
     }
 
+    const { 
+        addScreenDimensionsClassNames,
+        isWideScreen,
+        isThinScreen
+    } = useAddScreenDimensionsClassNames(styles);
+
 
     return (
         <>
 
-            <div className={`${styles.outerContainer}`}>
-
-                {/* <div className={styles.mainContentContainer}> */}
+            <div className={addScreenDimensionsClassNames(styles.outerContainer)}>
 
 
-                <div className={styles.imgDisplayContainer}>
+                <div className={addScreenDimensionsClassNames(styles.imgDisplayContainer)}>
 
                     {
                         isVideoAvailable && (
@@ -54,25 +61,32 @@ export function VisualsLayout({
 
 
 
-                <div className={styles.secondaryImgContainer}>
+                {
+                    !isThinScreen && (
+                        <div className={addScreenDimensionsClassNames(styles.secondaryImgContainer)}>
 
-                    <div className={styles.githubImgContainer}>
+                            {
+                                isWideScreen && (
+                                    <div className={styles.githubImgContainer}>
 
-                        <img className={styles.githubImg} src={githubImgSrc} alt="Github source code image" />
+                                        <img className={styles.githubImg} src={githubImgSrc} alt="Github source code image" />
 
-                    </div>
-
-                    <div className={styles.homePageImgContainer}>
-
-                        <img className={styles.homePageImg} src={homePageImgSrc} alt="Home page display image" />
-
-                    </div>
-
-
-                </div>
+                                    </div>
+                                )
+                            }
 
 
-                {/* </div> */}
+                            <div className={addScreenDimensionsClassNames(styles.homePageImgContainer)}>
+
+                                <img className={styles.homePageImg} src={homePageImgSrc} alt="Home page display image" />
+
+                            </div>
+
+
+                        </div>
+                    )
+                }
+
 
 
             </div>

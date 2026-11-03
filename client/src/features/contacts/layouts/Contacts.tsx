@@ -6,11 +6,17 @@ import { ContactItem } from "../components/ContactItem";
 import { SocialsItem } from "../components/SocialsItem";
 import { GitHub } from "../../../assets/icons/languages/github";
 import { LinkedIn } from "../../../assets/icons/LinkedIn";
+import { useAddScreenDimensionsClassNames } from "../../../hooks/useAddScreenDimensionsClassNames";
 
 
 export function Contacts() {
 
-
+    const { 
+        addScreenDimensionsClassNames,
+        isWideScreen,
+        isMediumScreen,
+        isThinScreen
+    } = useAddScreenDimensionsClassNames(styles);
 
 
     return (
@@ -18,21 +24,24 @@ export function Contacts() {
         
             <footer className={styles.outerContainer}>
 
-                <div className={styles.upperContainer}>
+                <div className={addScreenDimensionsClassNames(styles.upperContainer)}>
 
-                    <div className={styles.leftSide}>
+                    <div className={addScreenDimensionsClassNames(styles.leftSide)}>
                         
                         <h1 className={styles.titleContainer}>
 
                             <span className={styles.title}>
-                                Contact Me
+
+                                {
+                                    (isMediumScreen || isWideScreen) ? "Contact Me" : "Contacts"
+                                }
                             </span>
 
                         </h1>
 
-                        <div className={styles.contactsContainer}>
+                        <div className={addScreenDimensionsClassNames(styles.contactsContainer)}>
 
-                            <div className={styles.personalContainer}>
+                            <div className={addScreenDimensionsClassNames(styles.personalContainer)}>
 
                                 <ContactItem 
                                     item="Email"
@@ -48,7 +57,7 @@ export function Contacts() {
 
                             </div>
 
-                            <div className={styles.socialsContainer}>
+                            <div className={addScreenDimensionsClassNames(styles.socialsContainer)}>
 
                                 <SocialsItem 
                                     name="GitHub"
@@ -70,7 +79,7 @@ export function Contacts() {
 
                     </div>
 
-                    <div className={styles.rightSide}>
+                    <div className={addScreenDimensionsClassNames(styles.rightSide)}>
 
                         <div className={styles.imgContainer}>
                             <img src={githubProfImg} alt="Github Profile Image" />

@@ -21,6 +21,8 @@
 
     margin: 0 auto;
 
+    scroll-snap-align: start;
+
 
     overflow: hidden;
 

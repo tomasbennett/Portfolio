@@ -1,9 +1,13 @@
+import { useMediaQuery } from "react-responsive";
 import { HTMLTagIcon } from "../../../assets/icons/HTMLTagIcon";
 import { JSONTagIcon } from "../../../assets/icons/JSONTagIcon";
 import { TabIcon } from "../../../assets/icons/TabIcon";
 import { LanguageTile } from "../components/LanguageTile";
 import { Link } from "../components/Link";
 import styles from "./InfoLayout.module.css";
+import { mediumScreenMaxWidth, thinScreenMaxWidth } from "../../../constants/screenDimensions";
+import { useEffect } from "react";
+import { useAddScreenDimensionsClassNames } from "../../../hooks/useAddScreenDimensionsClassNames";
 
 
 type IInfoLayout = {
@@ -13,6 +17,7 @@ type IInfoLayout = {
     clientLink: string;
     serverLink?: string | undefined;
     languages: { name: string, svg: React.ReactNode }[]
+    direction: "even" | "odd";
 }
 
 
@@ -22,18 +27,25 @@ export function InfoLayout({
     livePreviewLink,
     clientLink,
     serverLink,
-    languages
+    languages,
+    direction
 }: IInfoLayout) {
 
     const isLivePreviewAvailable: boolean = !!livePreviewLink;
     const isServerCodeAvailable: boolean = !!serverLink;
 
 
+    const {
+        addScreenDimensionsClassNames,
+        isWideScreen,
+        isThinScreen
+    } = useAddScreenDimensionsClassNames(styles);
+
 
     return (
         <>
 
-            <div className={`${styles.outerContainer}`}>
+            <div className={addScreenDimensionsClassNames(styles.outerContainer)}>
 
                 <h2 className={styles.titleContainer}>
 
@@ -43,7 +55,11 @@ export function InfoLayout({
 
                 </h2>
 
-                <div className={styles.languageList}>
+                <div
+                    className={addScreenDimensionsClassNames(`
+                        ${styles.languageList} 
+                        ${direction === "even" ? styles.even : styles.odd}
+                        `)}>
 
                     {
                         languages.map((lan) => {
@@ -61,7 +77,7 @@ export function InfoLayout({
                 </div>
 
 
-                <p className={styles.infoContainer}>
+                <p className={addScreenDimensionsClassNames(styles.infoContainer)}>
 
                     <span className={styles.info}>
 
@@ -71,7 +87,7 @@ export function InfoLayout({
 
                 </p>
 
-                <div className={styles.linkBtnContainer}>
+                <div className={addScreenDimensionsClassNames(styles.linkBtnContainer)}>
 
                     {
                         isLivePreviewAvailable && (
@@ -113,9 +129,6 @@ export function InfoLayout({
 
 
                 </div>
-
-
-
 
             </div>
 
