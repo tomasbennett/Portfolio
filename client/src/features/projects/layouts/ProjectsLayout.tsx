@@ -9,11 +9,19 @@ import { WebPack } from "../../../assets/icons/languages/webpack";
 import { InfoLayout } from "./InfoLayout";
 import styles from "./ProjectsLayout.module.css";
 import { VisualsLayout } from "./VisualsLayout";
+import React, { useEffect, useState } from "react";
+import { IProjAnimationState } from "../models/IProjAnimationState";
+import { useScrollLoadIn } from "../../../hooks/useScrollLoadIn";
+import { useMediaQuery } from "react-responsive";
+import { thinScreenMaxWidth, mediumScreenMaxWidth } from "../../../constants/screenDimensions";
+import { useAddScreenDimensionsClassNames } from "../../../hooks/useAddScreenDimensionsClassNames";
+
 
 
 import odinBookHomePage from "../../../assets/proj/img/odinbook_homepage.png";
 import odinBookContentPage from "../../../assets/proj/img/odinbook_contentpage.png";
 import odinBookGithubPage from "../../../assets/proj/img/odinbook_github.png";
+import odinBookPresentationVideo from "../../../assets/proj/videos/odinbook-presentationvideo.mp4";
 
 import messagingAppHomePage from "../../../assets/proj/img/messagingapp_homepage.png";
 import messagingAppContentPage from "../../../assets/proj/img/messagingapp_contentpage.png";
@@ -22,13 +30,7 @@ import messagingAppGithubPage from "../../../assets/proj/img/messagingapp_github
 import shoppingCartHomePage from "../../../assets/proj/img/shoppingcart_homepage.png";
 import shoppingCartContentPage from "../../../assets/proj/img/shoppingcart_contentpage.png";
 import shoppingCartGithubPage from "../../../assets/proj/img/shoppingcart_github.png";
-import React, { useEffect, useState } from "react";
-import { IProjAnimationState } from "../models/IProjAnimationState";
-import { useScrollLoadIn } from "../../../hooks/useScrollLoadIn";
-import { useMediaQuery } from "react-responsive";
-import { thinScreenMaxWidth, mediumScreenMaxWidth } from "../../../constants/screenDimensions";
-import { useAddScreenDimensionsClassNames } from "../../../hooks/useAddScreenDimensionsClassNames";
-
+import shoppingCartPresentationVideo from "../../../assets/proj/videos/shoppingcart-presentationvideo.mp4";
 
 
 export function ProjectsLayout() {
@@ -105,8 +107,6 @@ export function ProjectsLayout() {
 
     const { 
         addScreenDimensionsClassNames,
-        isWideScreen,
-        isThinScreen
     } = useAddScreenDimensionsClassNames(styles);
 
 
@@ -137,7 +137,7 @@ export function ProjectsLayout() {
                             defMainContentImgSrc={odinBookContentPage}
                             homePageImgSrc={odinBookHomePage}
                             githubImgSrc={odinBookGithubPage}
-                            contentVideoSrc={""} />
+                            contentVideoSrc={odinBookPresentationVideo} />
 
                         <InfoLayout
                             direction="odd"
@@ -184,7 +184,7 @@ export function ProjectsLayout() {
                             defMainContentImgSrc={shoppingCartContentPage}
                             homePageImgSrc={shoppingCartHomePage}
                             githubImgSrc={shoppingCartGithubPage}
-                            contentVideoSrc={""} />
+                            contentVideoSrc={shoppingCartPresentationVideo} />
 
                             
 

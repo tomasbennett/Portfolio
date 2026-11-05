@@ -37,8 +37,6 @@ export function InfoLayout({
 
     const {
         addScreenDimensionsClassNames,
-        isWideScreen,
-        isThinScreen
     } = useAddScreenDimensionsClassNames(styles);
 
 

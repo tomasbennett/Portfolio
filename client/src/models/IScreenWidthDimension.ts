@@ -1,0 +1,1 @@
+export type IScreenWidthDimension = "thin" | "medium" | "wide";

@@ -3,6 +3,7 @@ import styles from "./VisualsLayout.module.css";
 import { useMediaQuery } from "react-responsive";
 import { thinScreenMaxWidth, mediumScreenMaxWidth } from "../../../constants/screenDimensions";
 import { useAddScreenDimensionsClassNames } from "../../../hooks/useAddScreenDimensionsClassNames";
+import { ContentVideo } from "../components/ContentVideo";
 
 type IVisualsLayoutProps = {
     defMainContentImgSrc: string;
@@ -18,55 +19,43 @@ export function VisualsLayout({
     contentVideoSrc
 }: IVisualsLayoutProps) {
 
-    const [mainContent, setMainContent] = useState<"video" | "img">("img");
-    const isVideoAvailable: boolean = !!contentVideoSrc;
+    // const [mainContent, setMainContent] = useState<"video" | "img">("img");
+    // const isVideoAvailable: boolean = !!contentVideoSrc;
 
 
-    const handleLoad = () => {
-        setMainContent("video");
-    }
+    // const handleLoad = () => {
+    //     setMainContent("video");
+    // }
 
-    const { 
+    const {
         addScreenDimensionsClassNames,
-        isWideScreen,
-        isThinScreen
+        screenDimension
     } = useAddScreenDimensionsClassNames(styles);
 
 
+    
+
+    
     return (
         <>
 
-            <div className={addScreenDimensionsClassNames(styles.outerContainer)}>
+            <div 
+                className={addScreenDimensionsClassNames(styles.outerContainer)}>
 
 
-                <div className={addScreenDimensionsClassNames(styles.imgDisplayContainer)}>
-
-                    {
-                        isVideoAvailable && (
-                            <video
-                                src={contentVideoSrc}
-                                autoPlay
-                                loop
-                                muted
-                                playsInline
-                                onLoadedData={handleLoad}
-                            />
-                        )
-                    }
-
-
-                    <img className={`${styles.mainImg} ${mainContent === "video" ? styles.videoLoaded : styles.noVideo}`} src={defMainContentImgSrc} alt="Main Content Image" />
-
-                </div>
+                <ContentVideo 
+                    defMainContentImgSrc={defMainContentImgSrc}
+                    contentVideoSrc={contentVideoSrc}
+                />
 
 
 
                 {
-                    !isThinScreen && (
+                    !(screenDimension === "thin") && (
                         <div className={addScreenDimensionsClassNames(styles.secondaryImgContainer)}>
 
                             {
-                                isWideScreen && (
+                                (screenDimension === "wide") && (
                                     <div className={styles.githubImgContainer}>
 
                                         <img className={styles.githubImg} src={githubImgSrc} alt="Github source code image" />
