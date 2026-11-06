@@ -1,9 +1,10 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import styles from "./VisualsLayout.module.css";
 import { useMediaQuery } from "react-responsive";
 import { thinScreenMaxWidth, mediumScreenMaxWidth } from "../../../constants/screenDimensions";
 import { useAddScreenDimensionsClassNames } from "../../../hooks/useAddScreenDimensionsClassNames";
 import { ContentVideo } from "../components/ContentVideo";
+import { useMediumScreenImgDisplay } from "../hooks/useMediumScreenImgDisplay";
 
 type IVisualsLayoutProps = {
     defMainContentImgSrc: string;
@@ -19,13 +20,9 @@ export function VisualsLayout({
     contentVideoSrc
 }: IVisualsLayoutProps) {
 
-    // const [mainContent, setMainContent] = useState<"video" | "img">("img");
-    // const isVideoAvailable: boolean = !!contentVideoSrc;
+    const [isDynamicAnimationPossible, setIsDynamicAnimationPossible] = useState<boolean>(false);
 
-
-    // const handleLoad = () => {
-    //     setMainContent("video");
-    // }
+    const contentImgContainerRef = useRef<HTMLDivElement | null>(null);
 
     const {
         addScreenDimensionsClassNames,
@@ -33,26 +30,52 @@ export function VisualsLayout({
     } = useAddScreenDimensionsClassNames(styles);
 
 
-    
+    const {
+        leftContentContainer,
+        rightHomePageImgContainer,
+        componentAnimationStates,
+        handleActivate,
+        handleDeactivate,
+        togglePlayState
+    } = useMediumScreenImgDisplay({
+        isDynamicAnimationPossible: (isDynamicAnimationPossible && screenDimension === "medium"),
+        contentImgContainerRef: contentImgContainerRef
+    });
 
     
     return (
         <>
 
             <div 
+                onAnimationEnd={() => { setIsDynamicAnimationPossible(true); }}
                 className={addScreenDimensionsClassNames(styles.outerContainer)}>
 
 
                 <ContentVideo 
                     defMainContentImgSrc={defMainContentImgSrc}
                     contentVideoSrc={contentVideoSrc}
+                    handleActivate={handleActivate}
+                    handleDeactivate={handleDeactivate}
+                    togglePlayState={togglePlayState}
+                    leftContentContainer={leftContentContainer}
+                    rightHomePageImgContainer={rightHomePageImgContainer}
+                    componentAnimationStates={componentAnimationStates}
+
                 />
 
 
 
                 {
                     !(screenDimension === "thin") && (
-                        <div className={addScreenDimensionsClassNames(styles.secondaryImgContainer)}>
+                        <div 
+                            onMouseEnter={handleActivate}
+                            onMouseLeave={handleDeactivate}
+                            onFocus={handleActivate}
+                            onBlur={handleDeactivate}
+                            onClick={togglePlayState}
+                            ref={rightHomePageImgContainer}
+                            data-animation={componentAnimationStates.rightContainer}
+                            className={addScreenDimensionsClassNames(styles.secondaryImgContainer)}>
 
                             {
                                 (screenDimension === "wide") && (

@@ -3,25 +3,32 @@ import { useError } from "../../error/contexts/ErrorContext";
 import { ICustomErrorResponse } from "../../../../../shared/features/api/models/APIErrorResponse";
 import { useNavigate } from "react-router-dom";
 import { errorPageRoute } from "../../../constants/routes";
+import { useAddScreenDimensionsClassNames } from "../../../hooks/useAddScreenDimensionsClassNames";
+import { IProjAnimationState } from "../models/IProjAnimationState";
+import { IProjVisualAnimationHookReturn } from "../models/IProjVisualAnimationHookReturn";
+import { IElementEventTypes } from "../models/ElementEventTypes";
 
 
 
 type IUseThinScreenImgVideoPlayer = {
     isVideoAvailable: boolean;
+    imgVideoPlayerContainerRef: React.RefObject<HTMLDivElement | null>;
 }
 
 export function useThinScreenImgVideoPlayer({
-    isVideoAvailable
-}: IUseThinScreenImgVideoPlayer) {
+    isVideoAvailable,
+    imgVideoPlayerContainerRef
+}: IUseThinScreenImgVideoPlayer): IProjVisualAnimationHookReturn & {
+    // imgVideoPlayerContainerRef: React.RefObject<HTMLDivElement | null>;
+    videoRef: React.RefObject<HTMLDivElement | null>;
+    currDisplay: IProjAnimationState;
+} {
 
-    const imgVideoPlayerContainerRef = useRef<HTMLDivElement | null>(null);
-    // const imgRef = useRef<HTMLImageElement | null>(null);
+    // const imgVideoPlayerContainerRef = useRef<HTMLDivElement | null>(null);
     const videoRef = useRef<HTMLDivElement | null>(null);
 
-    // const [isVideoPlaying, setIsVideoPlaying] = 
-    //     useState<boolean>(false);
 
-    const [currDisplay, setCurrDisplay] = useState<"displaying" | "displayed" | "leaving" | "left">("left");
+    const [currDisplay, setCurrDisplay] = useState<IProjAnimationState>("left");
 
     const errCtx = useError();
     const nav = useNavigate();
@@ -75,19 +82,19 @@ export function useThinScreenImgVideoPlayer({
 
     }, [currDisplay, isVideoAvailable]);
 
-    const handleVideoActivate = () => {
+    const handleActivate = (e: IElementEventTypes) => {
         if (!isVideoAvailable || currDisplay === "displayed") return;
 
         setCurrDisplay("displaying");
     }
 
-    const handleVideoDeactivate = () => {
+    const handleDeactivate = (e: IElementEventTypes) => {
         if (!isVideoAvailable || currDisplay === "left") return;
 
         setCurrDisplay("leaving");
     }
 
-    const toggleVideoPlayState = () => {
+    const togglePlayState = (e: IElementEventTypes) => {
         if (!isVideoAvailable) return;
 
         setCurrDisplay((prev) => {
@@ -99,13 +106,14 @@ export function useThinScreenImgVideoPlayer({
 
 
 
+
     return {
-        imgVideoPlayerContainerRef,
+        // imgVideoPlayerContainerRef,
         // imgRef,
         videoRef,
-        handleVideoActivate,
-        handleVideoDeactivate,
-        toggleVideoPlayState,
+        handleActivate,
+        handleDeactivate,
+        togglePlayState,
         // isVideoPlaying,
         currDisplay
     }

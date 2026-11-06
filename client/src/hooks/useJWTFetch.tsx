@@ -1,13 +1,6 @@
-import { useNavigate } from "react-router-dom";
 import { APIErrorSchema, ICustomErrorResponse } from "../../../shared/features/api/models/APIErrorResponse";
 import { invalidRefreshTokenStatus } from "../../../shared/features/auth/constants";
-import { domain } from "../constants/EnvironmentAPI";
-import { errorPageRoute } from "../constants/routes";
-import { useAuth } from "../features/auth/contexts/AuthContext";
-import { useError } from "../features/error/contexts/ErrorContext";
-import { AccessTokenResponseSchema } from "../../../shared/features/auth/models/IAccessTokenResponse";
 import { accessTokenLocalStorageKey } from "../constants/accessTokenLocalStorageKey";
-import { notExpectedFormatError } from "../constants/errorConstants";
 import { IJWTFetchResponses } from "../models/IJWTFetchResponses";
 import { useNewAccessToken } from "./useNewAccessToken";
 

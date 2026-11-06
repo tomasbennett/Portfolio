@@ -2,59 +2,90 @@ import { useState } from "react";
 import styles from "./ContentVideo.module.css";
 import { useAddScreenDimensionsClassNames } from "../../../hooks/useAddScreenDimensionsClassNames";
 import { useThinScreenImgVideoPlayer } from "../hooks/useThinScreenImgVideoPlayer";
+import { useMediumScreenImgDisplay } from "../hooks/useMediumScreenImgDisplay";
 
 
 type IContentVideoProps = {
     contentVideoSrc: string;
     defMainContentImgSrc: string;
-}
+} & ReturnType<typeof useMediumScreenImgDisplay>;
 
 export function ContentVideo({
     contentVideoSrc,
-    defMainContentImgSrc
+    defMainContentImgSrc,
+    handleActivate: handleMediumActivate,
+    handleDeactivate: handleMediumDeactivate,
+    togglePlayState: toggleMediumPlayState,
+    rightHomePageImgContainer,
+    leftContentContainer,
+    componentAnimationStates
 }: IContentVideoProps) {
 
-    //ONE FOR LOADING IN KEEP THE IMG VISIBLE VERSUS IS THE VIDEO EVEN POSSIBLE IN THE FIRST PLACE
-    //IF THE VIDEO IS NOT POSSIBLE THEN OBVIOUSLY THE CONTENT HAS TO BE IMG
-
     const [isVideoPossible, setIsVideoPossible] = useState<boolean>(!!contentVideoSrc);
+    const [isVideoLoaded, setIsVideoLoaded] = useState<boolean>(false);
+
 
     const {
         addScreenDimensionsClassNames,
+        screenDimension
     } = useAddScreenDimensionsClassNames(styles);
 
 
+
     const {
-        imgVideoPlayerContainerRef,
+        // imgVideoPlayerContainerRef,
         videoRef,
-        handleVideoActivate,
-        handleVideoDeactivate,
-        toggleVideoPlayState,
+        handleActivate: handleThinVideoActivate,
+        handleDeactivate: handleThinVideoDeactivate,
+        togglePlayState: toggleThinPlayState,
         currDisplay
     } = useThinScreenImgVideoPlayer({
-        isVideoAvailable: isVideoPossible
+        isVideoAvailable: (isVideoPossible && screenDimension === "thin"),
+        imgVideoPlayerContainerRef: leftContentContainer
     });
+
+
+
+    const isThinScreen = screenDimension === "thin";
+
+    const onActivate = isThinScreen
+        ? handleThinVideoActivate
+        : handleMediumActivate;
+
+    const onDeactivate = isThinScreen
+        ? handleThinVideoDeactivate
+        : handleMediumDeactivate;
+
+    const onTogglePlayState = isThinScreen
+        ? toggleThinPlayState
+        : toggleMediumPlayState;
 
 
     return (
         <>
             <div
-                onMouseEnter={handleVideoActivate}
-                onMouseLeave={handleVideoDeactivate}
-                onFocus={handleVideoActivate}
-                onBlur={handleVideoDeactivate}
-                ref={imgVideoPlayerContainerRef}
-                onClick={toggleVideoPlayState}
+                onMouseEnter={onActivate}
+                onMouseLeave={onDeactivate}
+                onFocus={onActivate}
+                onBlur={onDeactivate}
+                ref={leftContentContainer}
+                onClick={onTogglePlayState}
+                data-animation={componentAnimationStates.leftContainer}
+                // tabIndex={0}
                 className={addScreenDimensionsClassNames(styles.imgDisplayContainer)}>
 
                 {
                     (
-                        isVideoPossible && 
-                        currDisplay !== "left"
+                        isVideoPossible &&
+                        (
+                            screenDimension !== "thin" ||
+                            currDisplay !== "left"
+                        )
                     ) && (
-                        <div 
+                        <div
                             ref={videoRef}
                             data-animation={currDisplay}
+                            data-video-loaded={isVideoLoaded}
                             className={addScreenDimensionsClassNames(styles.videoContainer)}>
                             <video
                                 src={contentVideoSrc}
@@ -62,7 +93,7 @@ export function ContentVideo({
                                 loop
                                 muted
                                 playsInline
-                                // onLoadedData={() => { setIsVideoLoaded(true); }}
+                                onLoadedData={() => { setIsVideoLoaded(true); }}
                                 onError={() => { setIsVideoPossible(false); }}
                                 className={addScreenDimensionsClassNames(styles.videoContent)}
                             />
@@ -74,7 +105,10 @@ export function ContentVideo({
 
                 {
                     (
-                        currDisplay !== "displayed"
+                        (
+                            screenDimension !== "thin" ||
+                            currDisplay !== "displayed"
+                        )
                     ) && (
                         <div className={addScreenDimensionsClassNames(styles.imgContainer)}>
                             <img className={addScreenDimensionsClassNames(styles.mainImg)} src={defMainContentImgSrc} alt="Main Content Image" />

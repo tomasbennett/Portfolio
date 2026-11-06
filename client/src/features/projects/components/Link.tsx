@@ -17,8 +17,6 @@ export function Link({
 
     const {
         addScreenDimensionsClassNames,
-        isWideScreen,
-        isThinScreen
     } = useAddScreenDimensionsClassNames(styles);
 
 

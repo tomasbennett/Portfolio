@@ -10,7 +10,7 @@ import { InfoLayout } from "./InfoLayout";
 import styles from "./ProjectsLayout.module.css";
 import { VisualsLayout } from "./VisualsLayout";
 import React, { useEffect, useState } from "react";
-import { IProjAnimationState } from "../models/IProjAnimationState";
+import { IProjLoadingInState } from "../models/IProjAnimationState";
 import { useScrollLoadIn } from "../../../hooks/useScrollLoadIn";
 import { useMediaQuery } from "react-responsive";
 import { thinScreenMaxWidth, mediumScreenMaxWidth } from "../../../constants/screenDimensions";
@@ -35,9 +35,9 @@ import shoppingCartPresentationVideo from "../../../assets/proj/videos/shoppingc
 
 export function ProjectsLayout() {
 
-    const [isOdinBookAnimating, setIsOdinBookAnimating] = useState<IProjAnimationState>("waiting");
-    const [isShoppingCartAnimating, setIsShoppingCartAnimating] = useState<IProjAnimationState>("waiting");
-    const [isMessagingAppAnimating, setIsMessagingAppAnimating] = useState<IProjAnimationState>("waiting");
+    const [isOdinBookAnimating, setIsOdinBookAnimating] = useState<IProjLoadingInState>("waiting");
+    const [isShoppingCartAnimating, setIsShoppingCartAnimating] = useState<IProjLoadingInState>("waiting");
+    const [isMessagingAppAnimating, setIsMessagingAppAnimating] = useState<IProjLoadingInState>("waiting");
 
     const threshold: number = 0.4;
 
@@ -45,7 +45,7 @@ export function ProjectsLayout() {
     const { isVisible: isShoppingCartVisible, elementRef: shoppingCartElementRef } = useScrollLoadIn({ threshold: threshold });
     const { isVisible: isMessagingAppVisible, elementRef: messagingAppElementRef } = useScrollLoadIn({ threshold: threshold });
 
-    const handleThresholdTrigger = (element: HTMLDivElement | null, isStateVisible: boolean, setAnimationState: React.Dispatch<React.SetStateAction<IProjAnimationState>>) => {
+    const handleThresholdTrigger = (element: HTMLDivElement | null, isStateVisible: boolean, setAnimationState: React.Dispatch<React.SetStateAction<IProjLoadingInState>>) => {
         if (!element) {
             return;
         }

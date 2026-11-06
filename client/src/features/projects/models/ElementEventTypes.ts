@@ -1,0 +1,1 @@
+export type IElementEventTypes = React.MouseEvent | React.FocusEvent;

@@ -13,9 +13,7 @@ export function Contacts() {
 
     const { 
         addScreenDimensionsClassNames,
-        isWideScreen,
-        isMediumScreen,
-        isThinScreen
+        screenDimension
     } = useAddScreenDimensionsClassNames(styles);
 
 
@@ -33,7 +31,7 @@ export function Contacts() {
                             <span className={styles.title}>
 
                                 {
-                                    (isMediumScreen || isWideScreen) ? "Contact Me" : "Contacts"
+                                    (screenDimension === "medium" || screenDimension === "wide") ? "Contact Me" : "Contacts"
                                 }
                             </span>
 
