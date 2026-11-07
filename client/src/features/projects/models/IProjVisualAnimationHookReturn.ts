@@ -1,4 +1,4 @@
-import { IElementEventTypes } from "./ElementEventTypes";
+import { IElementEventTypes } from "./IElementEventTypes";
 
 export type IProjVisualAnimationHookReturn = {
     handleActivate: (e: IElementEventTypes) => void;

@@ -200,3 +200,123 @@
         width: calc(50% - var(--column-gap));
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.imgDisplayContainer.wideScreen{
+    --width: calc(50% - var(--column-gap) / 2);
+
+
+    position: absolute;
+
+    top: 0;
+    left: 0;
+
+    height: 100%;
+
+
+}
+
+
+
+.imgDisplayContainer.wideScreen[data-animation="displaying"]{
+    animation: displayWide .7s linear forwards;
+}
+
+.imgDisplayContainer.wideScreen[data-animation="displayed"]{
+    width: 100%;
+}
+
+.imgDisplayContainer.wideScreen[data-animation="leaving"]{
+    animation: leaveWide .7s linear forwards;
+}
+
+.imgDisplayContainer.wideScreen[data-animation="left"]{
+    width: var(--width);
+}
+
+.imgDisplayContainer.wideScreen[data-animation="disappearing"]{
+    animation: disappear .5s linear forwards;
+}
+
+.imgDisplayContainer.wideScreen[data-animation="disappeared"]{
+    opacity: 0;
+}
+
+.imgDisplayContainer.wideScreen[data-animation="appearing"]{
+    animation: appear .5s linear forwards;
+}
+
+.imgDisplayContainer.wideScreen[data-animation="appeared"]{
+    opacity: 1;
+}
+
+
+
+
+
+@keyframes disappear {
+    from {
+        opacity: 1;
+    }
+
+    to {
+        opacity: 0;
+    }
+}
+
+
+@keyframes appear {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+
+
+@keyframes displayWide {
+    from {
+        width: var(--width);
+    }
+
+    to {
+        width: 100%;
+    }
+}
+
+
+@keyframes leaveWide {
+    from {
+        width: 100%;
+    }
+
+    to {
+        width: var(--width);
+    }
+}

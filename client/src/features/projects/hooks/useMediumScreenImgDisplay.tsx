@@ -1,7 +1,7 @@
 import { useRef, useState } from "react"
 import { IMediumProjAnimationComponents } from "../models/IProjAnimationState";
 import { IProjVisualAnimationHookReturn } from "../models/IProjVisualAnimationHookReturn";
-import { IElementEventTypes } from "../models/ElementEventTypes";
+import { IElementEventTypes } from "../models/IElementEventTypes";
 import { useError } from "../../error/contexts/ErrorContext";
 import { useNavigate } from "react-router-dom";
 import { ICustomErrorResponse } from "../../../../../shared/features/api/models/APIErrorResponse";
@@ -17,7 +17,7 @@ export function useMediumScreenImgDisplay({
     isDynamicAnimationPossible,
     contentImgContainerRef: leftContentContainer
 }: IUseMediumScreenImgDisplay): IProjVisualAnimationHookReturn & {
-    leftContentContainer: React.RefObject<HTMLDivElement | null>;
+    // leftContentContainer: React.RefObject<HTMLDivElement | null>;
     rightHomePageImgContainer: React.RefObject<HTMLDivElement | null>;
     componentAnimationStates: IMediumProjAnimationComponents;
 } {
@@ -30,8 +30,8 @@ export function useMediumScreenImgDisplay({
 
 
     const [componentAnimationStates, setComponentAnimationStates] = useState<IMediumProjAnimationComponents>({
-        leftContainer: "left",
-        rightContainer: "left"
+        contentContainer: "left",
+        homePageImgContainer: "left"
     });
 
     const errCtx = useError();
@@ -85,15 +85,15 @@ export function useMediumScreenImgDisplay({
 
     const finishLeftContainerAnimation = () => {
         setComponentAnimationStates({
-            leftContainer: "displayed",
-            rightContainer: "left"
+            contentContainer: "displayed",
+            homePageImgContainer: "left"
         });
     }
 
     const finishRightContainerAnimation = () => {
         setComponentAnimationStates({
-            leftContainer: "left",
-            rightContainer: "displayed"
+            contentContainer: "left",
+            homePageImgContainer: "displayed"
         });
     }
 
@@ -102,7 +102,7 @@ export function useMediumScreenImgDisplay({
 
         setComponentAnimationStates(prev => ({
             ...prev,
-            leftContainer: "left"
+            contentContainer: "left"
         }));
 
         isAnimationLeaving.current = false;
@@ -111,7 +111,7 @@ export function useMediumScreenImgDisplay({
     const finishLeavingRightContainerAnimation = () => {
         setComponentAnimationStates(prev => ({
             ...prev,
-            rightContainer: "left"
+            homePageImgContainer: "left"
         }));
 
         isAnimationLeaving.current = false;
@@ -146,8 +146,8 @@ export function useMediumScreenImgDisplay({
         if (container === "left") {
 
             if (
-                componentAnimationStates.leftContainer === "displayed" ||
-                componentAnimationStates.leftContainer === "displaying"
+                componentAnimationStates.contentContainer === "displayed" ||
+                componentAnimationStates.contentContainer === "displaying"
             ) return;
 
 
@@ -155,8 +155,8 @@ export function useMediumScreenImgDisplay({
             rightRef.removeEventListener("animationend", finishLeavingRightContainerAnimation);
 
             setComponentAnimationStates({
-                rightContainer: "left",
-                leftContainer: "displaying"
+                homePageImgContainer: "left",
+                contentContainer: "displaying"
             });
 
             leftRef.addEventListener("animationend", finishLeftContainerAnimation, { once: true });
@@ -166,8 +166,8 @@ export function useMediumScreenImgDisplay({
         }
 
         if (
-            componentAnimationStates.rightContainer === "displayed" ||
-            componentAnimationStates.rightContainer === "displaying"
+            componentAnimationStates.homePageImgContainer === "displayed" ||
+            componentAnimationStates.homePageImgContainer === "displaying"
         ) return;
 
         leftRef.removeEventListener("animationend", finishLeavingLeftContainerAnimation);
@@ -175,8 +175,8 @@ export function useMediumScreenImgDisplay({
 
 
         setComponentAnimationStates({
-            leftContainer: "left",
-            rightContainer: "displaying"
+            contentContainer: "left",
+            homePageImgContainer: "displaying"
         });
 
         rightRef.addEventListener("animationend", finishRightContainerAnimation, { once: true });
@@ -189,6 +189,8 @@ export function useMediumScreenImgDisplay({
     const handleDeactivate = (e: IElementEventTypes) => {
         e.stopPropagation();
 
+        console.log("handle deactivate running: ");
+
         if (!isDynamicAnimationPossible) return;
 
         const container = whichContainer(e);
@@ -197,6 +199,8 @@ export function useMediumScreenImgDisplay({
             return;
         }
 
+        console.log("Container gathered functionality running: ", container);
+
         const rightRef = rightHomePageImgContainer.current!;
         const leftRef = leftContentContainer.current!;
 
@@ -204,8 +208,8 @@ export function useMediumScreenImgDisplay({
         if (container === "left") {
             
             if (
-                componentAnimationStates.leftContainer === "left" || 
-                componentAnimationStates.leftContainer === "leaving"
+                componentAnimationStates.contentContainer === "left" || 
+                componentAnimationStates.contentContainer === "leaving"
             ) return;
 
             isAnimationLeaving.current = true;
@@ -215,7 +219,7 @@ export function useMediumScreenImgDisplay({
 
             setComponentAnimationStates(prev => ({
                 ...prev,
-                leftContainer: "leaving"
+                contentContainer: "leaving"
             }));
 
 
@@ -226,8 +230,8 @@ export function useMediumScreenImgDisplay({
         }
 
         if (
-            componentAnimationStates.rightContainer === "left" || 
-            componentAnimationStates.rightContainer === "leaving"
+            componentAnimationStates.homePageImgContainer === "left" || 
+            componentAnimationStates.homePageImgContainer === "leaving"
         ) return;
 
         isAnimationLeaving.current = true;
@@ -237,7 +241,7 @@ export function useMediumScreenImgDisplay({
 
         setComponentAnimationStates(prev => ({
             ...prev,
-            rightContainer: "leaving"
+            homePageImgContainer: "leaving"
         }));
 
         rightRef.addEventListener("animationend", finishLeavingRightContainerAnimation, { once: true });
@@ -259,19 +263,19 @@ export function useMediumScreenImgDisplay({
         }
 
 
-        const { leftContainer, rightContainer } = componentAnimationStates;
+        const { contentContainer, homePageImgContainer } = componentAnimationStates;
 
         if (
-            leftContainer === "displaying" || 
-            leftContainer === "leaving" || 
-            rightContainer === "displaying" || 
-            rightContainer === "leaving"
+            contentContainer === "displaying" || 
+            contentContainer === "leaving" || 
+            homePageImgContainer === "displaying" || 
+            homePageImgContainer === "leaving"
         ) {
             return;
         }
 
         if (container === "left") {
-            if (leftContainer === "displayed") {
+            if (contentContainer === "displayed") {
                 handleDeactivate(e);
             } else {
                 handleActivate(e);
@@ -281,7 +285,7 @@ export function useMediumScreenImgDisplay({
         }
 
         if (container === "right") {
-            if (rightContainer === "displayed") {
+            if (homePageImgContainer === "displayed") {
                 handleDeactivate(e);
             } else {
                 handleActivate(e);
@@ -298,7 +302,6 @@ export function useMediumScreenImgDisplay({
 
 
     return {
-        leftContentContainer,
         rightHomePageImgContainer,
         handleActivate,
         handleDeactivate,

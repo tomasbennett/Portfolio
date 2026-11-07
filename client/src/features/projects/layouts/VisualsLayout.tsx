@@ -5,6 +5,7 @@ import { thinScreenMaxWidth, mediumScreenMaxWidth } from "../../../constants/scr
 import { useAddScreenDimensionsClassNames } from "../../../hooks/useAddScreenDimensionsClassNames";
 import { ContentVideo } from "../components/ContentVideo";
 import { useMediumScreenImgDisplay } from "../hooks/useMediumScreenImgDisplay";
+import { useWideScreenImgDisplay } from "../hooks/useWideScreenImgDisplay";
 
 type IVisualsLayoutProps = {
     defMainContentImgSrc: string;
@@ -30,36 +31,84 @@ export function VisualsLayout({
     } = useAddScreenDimensionsClassNames(styles);
 
 
+    const isMediumScreen = screenDimension === "medium";
+    const isWideScreen = screenDimension === "wide";
+
+
     const {
-        leftContentContainer,
+        // leftContentContainer,
         rightHomePageImgContainer,
-        componentAnimationStates,
-        handleActivate,
-        handleDeactivate,
-        togglePlayState
+        componentAnimationStates: mediumComponentAnimationStates,
+        handleActivate: handleMediumActivate,
+        handleDeactivate: handleMediumScreenDeactivate,
+        togglePlayState: toggleMediumScreenPlayState
     } = useMediumScreenImgDisplay({
         isDynamicAnimationPossible: (isDynamicAnimationPossible && screenDimension === "medium"),
         contentImgContainerRef: contentImgContainerRef
     });
 
-    
+
+
+    const {
+        githubImgContainerRef,
+        homePageImgContainerRef,
+        componentAnimationStates: wideScreenComponentAnimationStates,
+        handleActivate: handleWideScreenActivate,
+        handleDeactivate: handleWideScreenDeactivate,
+        togglePlayState: toggleWideScreenPlayState
+    } = useWideScreenImgDisplay({
+        contentImgContainerRef,
+        isAnimatingPossible: (isDynamicAnimationPossible && screenDimension === "wide")
+    });
+
+
+    const onAnimationActivate = isWideScreen
+        ? handleWideScreenActivate
+        : isMediumScreen
+            ? handleMediumActivate
+            : undefined;
+
+
+    const onAnimationDeactivate = isWideScreen
+        ? handleWideScreenActivate
+        : isMediumScreen
+            ? handleMediumScreenDeactivate
+            : undefined;
+
+
+    const onAnimationToggle = isWideScreen
+        ? toggleWideScreenPlayState
+        : isMediumScreen
+            ? toggleMediumScreenPlayState
+            : undefined;
+
+
+
+
+    // const animationStates = isWideScreen 
+    //     ? wideScreenComponentAnimationStates
+    //     : isMediumScreen
+    //         ? mediumComponentAnimationStates
+    //         : undefined;
+
+
     return (
         <>
 
-            <div 
+            <div
                 onAnimationEnd={() => { setIsDynamicAnimationPossible(true); }}
                 className={addScreenDimensionsClassNames(styles.outerContainer)}>
 
 
-                <ContentVideo 
+                <ContentVideo
                     defMainContentImgSrc={defMainContentImgSrc}
                     contentVideoSrc={contentVideoSrc}
-                    handleActivate={handleActivate}
-                    handleDeactivate={handleDeactivate}
-                    togglePlayState={togglePlayState}
-                    leftContentContainer={leftContentContainer}
-                    rightHomePageImgContainer={rightHomePageImgContainer}
-                    componentAnimationStates={componentAnimationStates}
+                    leftContentContainer={contentImgContainerRef}
+                    mediumImgContainerAnimationStates={isMediumScreen ? mediumComponentAnimationStates.contentContainer : undefined}
+                    wideImgContainerAnimationStates={isWideScreen ? wideScreenComponentAnimationStates.contentContainer.animState : undefined}
+                    handleActivate={onAnimationActivate}
+                    handleDeactivate={onAnimationDeactivate}
+                    togglePlayState={onAnimationToggle}
 
                 />
 
@@ -67,19 +116,27 @@ export function VisualsLayout({
 
                 {
                     !(screenDimension === "thin") && (
-                        <div 
-                            onMouseEnter={handleActivate}
-                            onMouseLeave={handleDeactivate}
-                            onFocus={handleActivate}
-                            onBlur={handleDeactivate}
-                            onClick={togglePlayState}
+                        <div
+                            onMouseEnter={handleMediumActivate}
+                            onMouseLeave={handleMediumScreenDeactivate}
+                            onFocus={handleMediumActivate}
+                            onBlur={handleMediumScreenDeactivate}
+                            onClick={toggleMediumScreenPlayState}
+                            data-animation={mediumComponentAnimationStates.homePageImgContainer}
                             ref={rightHomePageImgContainer}
-                            data-animation={componentAnimationStates.rightContainer}
                             className={addScreenDimensionsClassNames(styles.secondaryImgContainer)}>
 
                             {
                                 (screenDimension === "wide") && (
-                                    <div className={styles.githubImgContainer}>
+                                    <div
+                                        onMouseEnter={handleWideScreenActivate}
+                                        onMouseLeave={handleWideScreenDeactivate}
+                                        onFocus={handleWideScreenActivate}
+                                        onBlur={handleWideScreenDeactivate}
+                                        onClick={toggleWideScreenPlayState}
+                                        ref={githubImgContainerRef}
+                                        data-animation={wideScreenComponentAnimationStates.githubImgContainer}
+                                        className={addScreenDimensionsClassNames(styles.githubImgContainer)}>
 
                                         <img className={styles.githubImg} src={githubImgSrc} alt="Github source code image" />
 
@@ -88,7 +145,15 @@ export function VisualsLayout({
                             }
 
 
-                            <div className={addScreenDimensionsClassNames(styles.homePageImgContainer)}>
+                            <div
+                                onMouseEnter={handleWideScreenActivate}
+                                onMouseLeave={handleWideScreenDeactivate}
+                                onFocus={handleWideScreenActivate}
+                                onBlur={handleWideScreenDeactivate}
+                                onClick={toggleWideScreenPlayState}
+                                data-animation={wideScreenComponentAnimationStates.homePageImgContainer.animState}
+                                ref={homePageImgContainerRef}
+                                className={addScreenDimensionsClassNames(styles.homePageImgContainer)}>
 
                                 <img className={styles.homePageImg} src={homePageImgSrc} alt="Home page display image" />
 

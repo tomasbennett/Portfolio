@@ -6,7 +6,7 @@ import { errorPageRoute } from "../../../constants/routes";
 import { useAddScreenDimensionsClassNames } from "../../../hooks/useAddScreenDimensionsClassNames";
 import { IProjAnimationState } from "../models/IProjAnimationState";
 import { IProjVisualAnimationHookReturn } from "../models/IProjVisualAnimationHookReturn";
-import { IElementEventTypes } from "../models/ElementEventTypes";
+import { IElementEventTypes } from "../models/IElementEventTypes";
 
 
 

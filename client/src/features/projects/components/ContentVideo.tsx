@@ -3,22 +3,28 @@ import styles from "./ContentVideo.module.css";
 import { useAddScreenDimensionsClassNames } from "../../../hooks/useAddScreenDimensionsClassNames";
 import { useThinScreenImgVideoPlayer } from "../hooks/useThinScreenImgVideoPlayer";
 import { useMediumScreenImgDisplay } from "../hooks/useMediumScreenImgDisplay";
+import { useWideScreenImgDisplay } from "../hooks/useWideScreenImgDisplay";
+import { IProjVisualAnimationHookReturn } from "../models/IProjVisualAnimationHookReturn";
+import { IMediumProjAnimationComponents, IProjAnimationState, IWideProjAnimationComponents, IWideProjTypes } from "../models/IProjAnimationState";
 
 
 type IContentVideoProps = {
     contentVideoSrc: string;
     defMainContentImgSrc: string;
-} & ReturnType<typeof useMediumScreenImgDisplay>;
+    leftContentContainer: React.RefObject<HTMLDivElement | null>;
+    mediumImgContainerAnimationStates: IProjAnimationState | undefined;
+    wideImgContainerAnimationStates: IWideProjTypes | undefined;
+} & Partial<IProjVisualAnimationHookReturn>;
 
 export function ContentVideo({
     contentVideoSrc,
     defMainContentImgSrc,
-    handleActivate: handleMediumActivate,
-    handleDeactivate: handleMediumDeactivate,
-    togglePlayState: toggleMediumPlayState,
-    rightHomePageImgContainer,
+    handleActivate,
+    handleDeactivate,
+    togglePlayState,
     leftContentContainer,
-    componentAnimationStates
+    mediumImgContainerAnimationStates,
+    wideImgContainerAnimationStates
 }: IContentVideoProps) {
 
     const [isVideoPossible, setIsVideoPossible] = useState<boolean>(!!contentVideoSrc);
@@ -38,7 +44,7 @@ export function ContentVideo({
         handleActivate: handleThinVideoActivate,
         handleDeactivate: handleThinVideoDeactivate,
         togglePlayState: toggleThinPlayState,
-        currDisplay
+        currDisplay: thinCurrDisplay
     } = useThinScreenImgVideoPlayer({
         isVideoAvailable: (isVideoPossible && screenDimension === "thin"),
         imgVideoPlayerContainerRef: leftContentContainer
@@ -48,17 +54,22 @@ export function ContentVideo({
 
     const isThinScreen = screenDimension === "thin";
 
+
     const onActivate = isThinScreen
         ? handleThinVideoActivate
-        : handleMediumActivate;
+        : handleActivate;
 
     const onDeactivate = isThinScreen
         ? handleThinVideoDeactivate
-        : handleMediumDeactivate;
+        : handleDeactivate;
 
     const onTogglePlayState = isThinScreen
         ? toggleThinPlayState
-        : toggleMediumPlayState;
+        : togglePlayState;
+
+
+    
+
 
 
     return (
@@ -70,7 +81,7 @@ export function ContentVideo({
                 onBlur={onDeactivate}
                 ref={leftContentContainer}
                 onClick={onTogglePlayState}
-                data-animation={componentAnimationStates.leftContainer}
+                data-animation={mediumImgContainerAnimationStates ?? wideImgContainerAnimationStates}
                 // tabIndex={0}
                 className={addScreenDimensionsClassNames(styles.imgDisplayContainer)}>
 
@@ -79,12 +90,12 @@ export function ContentVideo({
                         isVideoPossible &&
                         (
                             screenDimension !== "thin" ||
-                            currDisplay !== "left"
+                            thinCurrDisplay !== "left"
                         )
                     ) && (
                         <div
                             ref={videoRef}
-                            data-animation={currDisplay}
+                            data-animation={thinCurrDisplay}
                             data-video-loaded={isVideoLoaded}
                             className={addScreenDimensionsClassNames(styles.videoContainer)}>
                             <video
@@ -107,7 +118,7 @@ export function ContentVideo({
                     (
                         (
                             screenDimension !== "thin" ||
-                            currDisplay !== "displayed"
+                            thinCurrDisplay !== "displayed"
                         )
                     ) && (
                         <div className={addScreenDimensionsClassNames(styles.imgContainer)}>

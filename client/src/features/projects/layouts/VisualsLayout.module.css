@@ -1,4 +1,4 @@
-.outerContainer{
+.outerContainer {
     --border-radius: 2rem;
 
     flex: 2 1 0;
@@ -16,7 +16,7 @@
 
 }
 
-.outerContainer.thinScreen{
+.outerContainer.thinScreen {
     width: 100%;
 
     height: auto;
@@ -24,7 +24,7 @@
 
 
 
-.outerContainer.mediumScreen{
+.outerContainer.mediumScreen {
     --border-radius: 1.3rem;
 
     --column-gap: 0rem;
@@ -36,7 +36,12 @@
 
 
 
-.imgDisplayContainer{
+
+
+
+
+
+.imgDisplayContainer {
     position: relative;
 
     flex: 1 1 0;
@@ -46,8 +51,8 @@
 
     border-radius: var(--border-radius);
 
-    & > img,
-    & > video{
+    &>img,
+    &>video {
         width: 100%;
         height: 100%;
 
@@ -60,23 +65,24 @@
 }
 
 
-.imgDisplayContainer.thinScreen{
+.imgDisplayContainer.thinScreen {
 
-    
-    & > img,
-    & > video{
+
+    &>img,
+    &>video {
         position: absolute;
 
         left: 50%;
         top: 50%;
-    
+
         transform: translate(-50%, -50%);
     }
 
-    & > img{
+    &>img {
         z-index: 2;
     }
-    & > video{
+
+    &>video {
         z-index: 1;
     }
 }
@@ -86,7 +92,7 @@
 
 
 
-.secondaryImgContainer{
+.secondaryImgContainer {
     flex: 1 1 0;
     height: 100%;
 
@@ -98,7 +104,7 @@
 
 
 
-    .githubImgContainer{
+    .githubImgContainer {
         flex: 1 1 0;
         width: 100%;
 
@@ -106,7 +112,7 @@
 
         overflow: hidden;
 
-        & > img{
+        &>img {
             width: 100%;
             height: 100%;
 
@@ -116,7 +122,7 @@
 
 
 
-    .homePageImgContainer{
+    .homePageImgContainer {
         flex: 1 1 0;
         width: 100%;
 
@@ -125,7 +131,7 @@
         overflow: hidden;
 
 
-        & > img{
+        &>img {
             width: 100%;
             height: 100%;
 
@@ -136,7 +142,7 @@
 
 
 
-.secondaryImgContainer.mediumScreen{
+.secondaryImgContainer.mediumScreen {
     position: absolute;
 
     top: 0;
@@ -149,25 +155,25 @@
     height: 100%;
 }
 
-.secondaryImgContainer.mediumScreen[data-animation="displaying"]{
+.secondaryImgContainer.mediumScreen[data-animation="displaying"] {
     z-index: 2;
 
     animation: displayRight .5s ease-in-out forwards;
 }
 
-.secondaryImgContainer.mediumScreen[data-animation="displayed"]{
+.secondaryImgContainer.mediumScreen[data-animation="displayed"] {
     z-index: 2;
 
     width: 100%;
 }
 
-.secondaryImgContainer.mediumScreen[data-animation="leaving"]{
+.secondaryImgContainer.mediumScreen[data-animation="leaving"] {
     animation: closeRight .5s ease-in-out forwards;
 
     z-index: 2;
 }
 
-.secondaryImgContainer.mediumScreen[data-animation="left"]{
+.secondaryImgContainer.mediumScreen[data-animation="left"] {
     z-index: 1;
 }
 
@@ -178,6 +184,7 @@
     from {
         width: calc(50% - var(--column-gap));
     }
+
     to {
         width: 100%;
     }
@@ -188,7 +195,140 @@
     from {
         width: 100%;
     }
+
     to {
         width: calc(50% - var(--column-gap));
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.githubImgContainer.wideScreen{
+    --height: calc(50% - var(--column-gap) / 2);
+    --width: calc(50% - var(--column-gap) / 2);
+
+    position: absolute;
+
+    top: 0;
+    right: 0;
+}
+
+
+
+
+
+.homePageImgContainer.wideScreen{
+    --height: calc(50% - var(--column-gap) / 2);
+    --width: calc(50% - var(--column-gap) / 2);
+    
+    position: absolute;
+    
+    bottom: 0;
+    right: 0;
+}
+
+
+
+
+
+.githubImgContainer.wideScreen[data-animation="displaying"],
+.homePageImgContainer.wideScreen[data-animation="displaying"]{
+    animation: displayWide .7s linear forwards;
+}
+
+.githubImgContainer.wideScreen[data-animation="displayed"],
+.homePageImgContainer.wideScreen[data-animation="displayed"]{
+    width: 100%;
+    height: 100%;
+}
+
+.githubImgContainer.wideScreen[data-animation="leaving"],
+.homePageImgContainer.wideScreen[data-animation="leaving"]{
+    animation: leaveWide .7s linear forwards;
+}
+
+.githubImgContainer.wideScreen[data-animation="left"],
+.homePageImgContainer.wideScreen[data-animation="left"]{
+    width: var(--width);
+    height: var(--height);
+}
+
+.githubImgContainer.wideScreen[data-animation="disappearing"],
+.homePageImgContainer.wideScreen[data-animation="disappearing"]{
+    animation: disappear .5s linear forwards;
+}
+
+.githubImgContainer.wideScreen[data-animation="disappeared"],
+.homePageImgContainer.wideScreen[data-animation="disappeared"]{
+    opacity: 0;
+}
+
+.githubImgContainer.wideScreen[data-animation="appearing"],
+.homePageImgContainer.wideScreen[data-animation="appearing"]{
+    animation: appear .5s linear forwards;
+}
+
+.githubImgContainer.wideScreen[data-animation="appeared"],
+.homePageImgContainer.wideScreen[data-animation="appeared"]{
+    opacity: 1;
+}
+
+
+@keyframes disappear {
+    from {
+        opacity: 1;
+    }
+
+    to {
+        opacity: 0;
+    }
+}
+
+
+@keyframes appear {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+
+
+@keyframes displayWide {
+    from {
+        width: var(--width);
+        height: var(--height);
+    }
+
+    to {
+        width: 100%;
+        height: 100%;
+    }
+}
+
+
+@keyframes leaveWide {
+    from {
+        width: 100%;
+        height: 100%;
+    }
+
+    to {
+        width: var(--width);
+        height: var(--height);
     }
 }
