@@ -243,14 +243,19 @@
 
 .imgDisplayContainer.wideScreen[data-animation="displaying"]{
     animation: displayWide .7s linear forwards;
+
+    z-index: 2;
 }
 
 .imgDisplayContainer.wideScreen[data-animation="displayed"]{
     width: 100%;
+
+    z-index: 2;
 }
 
 .imgDisplayContainer.wideScreen[data-animation="leaving"]{
     animation: leaveWide .7s linear forwards;
+
 }
 
 .imgDisplayContainer.wideScreen[data-animation="left"]{
@@ -259,10 +264,14 @@
 
 .imgDisplayContainer.wideScreen[data-animation="disappearing"]{
     animation: disappear .5s linear forwards;
+
+    z-index: 1;
 }
 
 .imgDisplayContainer.wideScreen[data-animation="disappeared"]{
     opacity: 0;
+
+    z-index: 1;
 }
 
 .imgDisplayContainer.wideScreen[data-animation="appearing"]{
@@ -271,6 +280,8 @@
 
 .imgDisplayContainer.wideScreen[data-animation="appeared"]{
     opacity: 1;
+
+    width: var(--width);
 }
 
 

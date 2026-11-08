@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { IProjVisualAnimationHookReturn } from "../models/IProjVisualAnimationHookReturn";
 import { IWideProjAnimationComponents, IWideProjReferenceTypes, IWideProjTypes } from "../models/IProjAnimationState";
 import { useError } from "../../error/contexts/ErrorContext";
@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { ICustomErrorResponse } from "../../../../../shared/features/api/models/APIErrorResponse";
 import { errorPageRoute } from "../../../constants/routes";
 import { IElementEventTypes } from "../models/IElementEventTypes";
+import { IProjAnimEndActions, IProjAnimEndStates } from "../models/IProjAnimEndStates";
 
 
 
@@ -23,6 +24,7 @@ export function useWideScreenImgDisplay({
     componentAnimationStates: IWideProjAnimationComponents;
 } {
 
+    const isAnimating = useRef<boolean>(false);
 
     const githubImgContainerRef = useRef<HTMLDivElement | null>(null);
     const homePageImgContainerRef = useRef<HTMLDivElement | null>(null);
@@ -44,10 +46,10 @@ export function useWideScreenImgDisplay({
         }
     });
 
-    
 
 
-    
+
+
     const errCtx = useError();
     const nav = useNavigate();
 
@@ -99,9 +101,187 @@ export function useWideScreenImgDisplay({
 
         } else {
             return null;
-    
+
         }
     }
+
+
+
+    const numElemsDisappearRef = useRef<number>(0);
+    const activeElemKeyRef = useRef<keyof IWideProjAnimationComponents | undefined>(undefined);
+
+    const onAppearingAnimEnd = (componentKey: keyof IWideProjAnimationComponents) => {
+        numElemsDisappearRef.current -= 1;
+
+        setComponentAnimationStates(prev => {
+
+            const newVal: IWideProjReferenceTypes = {
+                ...prev[componentKey],
+                animState: "appeared"
+            }
+
+            return {
+                ...prev,
+                [componentKey]: newVal
+            }
+
+        });
+
+        if (numElemsDisappearRef.current > 0) return;
+
+        isAnimating.current = false;
+
+    }
+
+    const onLeavingAnimEnd = (componentKey: keyof IWideProjAnimationComponents) => {
+        setComponentAnimationStates(prev => {
+            const updated = { ...prev };
+
+            const keys = Object.keys(updated) as Array<
+                keyof IWideProjAnimationComponents
+            >;
+
+            keys.forEach(key => {
+                if (key !== componentKey) {
+                    updated[key] = {
+                        ...updated[key],
+                        animState: "appearing"
+                    };
+                } else {
+                    updated[key] = {
+                        ...updated[key],
+                        animState: "left"
+                    }
+                }
+            });
+
+            return updated;
+        });
+    }
+
+    const onDisappearingAnimEnd = (componentKey: keyof IWideProjAnimationComponents) => {
+        numElemsDisappearRef.current += 1;
+
+        //disappeared
+        setComponentAnimationStates(prev => {
+            const newVal: IWideProjReferenceTypes = {
+                ...prev[componentKey],
+                animState: "disappeared"
+            }
+
+            return {
+                ...prev,
+                [componentKey]: newVal
+            }
+
+        });
+
+        if (numElemsDisappearRef.current < 2) return;
+
+
+        const activeElemKey = activeElemKeyRef.current;
+        if (!activeElemKey) return;
+
+        //displaying
+        setComponentAnimationStates(prev => {
+            const newVal: IWideProjReferenceTypes = {
+                ...prev[activeElemKey],
+                animState: "displaying"
+            }
+
+            return {
+                ...prev,
+                [activeElemKey]: newVal
+            }
+
+        });
+
+
+
+    }
+
+    const onDisplayingAnimEnd = (componentKey: keyof IWideProjAnimationComponents) => {
+        setComponentAnimationStates(prev => {
+            const newVal: IWideProjReferenceTypes = {
+                ...prev[componentKey],
+                animState: "displayed"
+            }
+
+            return {
+                ...prev,
+                [componentKey]: newVal
+            }
+        });
+
+        isAnimating.current = false;
+
+    }
+
+
+
+
+
+
+
+    const animationEndActions: IProjAnimEndActions = {
+        leaving: onLeavingAnimEnd,
+        appearing: onAppearingAnimEnd,
+        disappearing: onDisappearingAnimEnd,
+        displaying: onDisplayingAnimEnd
+    }
+
+
+
+
+
+
+    function isProjAnimEndState(
+        state: IWideProjTypes
+    ): state is IProjAnimEndStates {
+        return state in animationEndActions;
+    }
+
+    useEffect(() => {
+        const listeners: {
+            element: HTMLDivElement;
+            handler: (e: AnimationEvent) => void;
+        }[] = [];
+
+        const keys = Object.keys(componentAnimationStates) as Array<
+            keyof IWideProjAnimationComponents
+        >;
+
+        keys.forEach(key => {
+            const entry = componentAnimationStates[key];
+            const animState = entry.animState;
+            const element = entry.component.current;
+            if (!element) return;
+
+            if (!isProjAnimEndState(animState)) return;
+
+            const handler = (e: AnimationEvent) => {
+                if (e.target !== element) return;
+
+                animationEndActions[animState](key);
+            };
+
+            element.addEventListener("animationend", handler);
+
+            listeners.push({ element, handler });
+        });
+
+        return () => {
+            listeners.forEach(({ element, handler }) => {
+                element.removeEventListener("animationend", handler);
+            });
+        };
+    }, [componentAnimationStates]);
+
+
+
+
+
+
 
 
 
@@ -109,15 +289,37 @@ export function useWideScreenImgDisplay({
 
     function handleActivate(e: IElementEventTypes) {
         // No-op for wide screens
+        if (!isAnimatingPossible || isAnimating.current) return;
         e.stopPropagation();
 
-        if (!isAnimatingPossible) return;
 
         const container = whichContainer(e);
 
         if (!container) return;
 
+        activeElemKeyRef.current = container;
 
+        isAnimating.current = true;
+
+        setComponentAnimationStates(prev => {
+
+
+            return {
+                ...prev,
+                ...Object.fromEntries(
+                    Object.entries(componentAnimationStates).map(([key, val]) => {
+                        
+                        const newVal: IWideProjReferenceTypes = key === container ? val : { ...val, animState: "disappearing" };
+
+
+
+                        return [key, newVal]
+                    })
+                )
+            }
+        });
+
+        return;
 
 
 
@@ -126,28 +328,33 @@ export function useWideScreenImgDisplay({
 
     function handleDeactivate(e: IElementEventTypes) {
         // No-op for wide screens
+        if (!isAnimatingPossible || isAnimating.current) return;
         e.stopPropagation();
 
-        if (!isAnimatingPossible) return;
 
         const container = whichContainer(e);
 
         if (!container) return;
 
-        if (componentAnimationStates[container].animState === "displayed") {
 
-            const newVal: IWideProjReferenceTypes = {
-                animState: "leaving",
-                component: componentAnimationStates[container].component
-            };
+        const componentRef = componentAnimationStates[container].component;
 
-            setComponentAnimationStates((prev): IWideProjAnimationComponents => ({
-                ...prev,
-                [container]: newVal
-            }));
+        const newVal: IWideProjReferenceTypes = {
+            animState: "leaving",
+            component: componentRef
+        };
 
-            return;
-        }
+        setComponentAnimationStates((prev) => ({
+            ...prev,
+            [container]: newVal
+        }));
+
+        activeElemKeyRef.current = undefined;
+        isAnimating.current = true;
+
+        return;
+
+
 
 
 
@@ -157,9 +364,9 @@ export function useWideScreenImgDisplay({
 
     function togglePlayState(e: IElementEventTypes) {
         // No-op for wide screens
+        if (!isAnimatingPossible || isAnimating.current) return;
         e.stopPropagation();
 
-        if (!isAnimatingPossible) return;
 
         const container = whichContainer(e);
 

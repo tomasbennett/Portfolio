@@ -135,7 +135,7 @@ export function VisualsLayout({
                                         onBlur={handleWideScreenDeactivate}
                                         onClick={toggleWideScreenPlayState}
                                         ref={githubImgContainerRef}
-                                        data-animation={wideScreenComponentAnimationStates.githubImgContainer}
+                                        data-animation={wideScreenComponentAnimationStates.githubImgContainer.animState}
                                         className={addScreenDimensionsClassNames(styles.githubImgContainer)}>
 
                                         <img className={styles.githubImg} src={githubImgSrc} alt="Github source code image" />
