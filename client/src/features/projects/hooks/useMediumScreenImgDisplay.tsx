@@ -121,14 +121,15 @@ export function useMediumScreenImgDisplay({
 
     const handleActivate = (e: IElementEventTypes) => {
 
-        console.log("handleActivate called", e.target, e.currentTarget, e.type);
-        e.stopPropagation();
-        console.log("is animation leaving", isAnimationLeaving.current);
-
         if (
             !isDynamicAnimationPossible || 
             isAnimationLeaving.current
         ) return;
+        
+        e.stopPropagation();
+        console.log("handleActivate called", e.target, e.currentTarget, e.type);
+        console.log("is animation leaving", isAnimationLeaving.current);
+
 
         const container = whichContainer(e);
 
@@ -187,11 +188,11 @@ export function useMediumScreenImgDisplay({
     }
 
     const handleDeactivate = (e: IElementEventTypes) => {
+        if (!isDynamicAnimationPossible) return;
         e.stopPropagation();
 
         console.log("handle deactivate running: ");
 
-        if (!isDynamicAnimationPossible) return;
 
         const container = whichContainer(e);
 
@@ -252,9 +253,9 @@ export function useMediumScreenImgDisplay({
     }
 
     const togglePlayState = (e: IElementEventTypes) => {
+        if (!isDynamicAnimationPossible) return;
         e.stopPropagation();
 
-        if (!isDynamicAnimationPossible) return;
 
         const container = whichContainer(e);
 

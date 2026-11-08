@@ -235,14 +235,14 @@
     left: 0;
 
     height: 100%;
-
+    width: var(--width);
 
 }
 
 
 
 .imgDisplayContainer.wideScreen[data-animation="displaying"]{
-    animation: displayWide .7s linear forwards;
+    animation: displayWide .7s ease-in-out forwards;
 
     z-index: 2;
 }
@@ -254,7 +254,7 @@
 }
 
 .imgDisplayContainer.wideScreen[data-animation="leaving"]{
-    animation: leaveWide .7s linear forwards;
+    animation: leaveWide .7s ease-in-out forwards;
 
 }
 
@@ -263,7 +263,7 @@
 }
 
 .imgDisplayContainer.wideScreen[data-animation="disappearing"]{
-    animation: disappear .5s linear forwards;
+    animation: disappear .5s ease-in-out forwards;
 
     z-index: 1;
 }
@@ -275,13 +275,13 @@
 }
 
 .imgDisplayContainer.wideScreen[data-animation="appearing"]{
-    animation: appear .5s linear forwards;
+    animation: appear .5s ease-in-out forwards;
 }
 
 .imgDisplayContainer.wideScreen[data-animation="appeared"]{
     opacity: 1;
 
-    width: var(--width);
+    /* width: var(--width); */
 }
 
 

@@ -112,6 +112,9 @@ export function useWideScreenImgDisplay({
 
     const onAppearingAnimEnd = (componentKey: keyof IWideProjAnimationComponents) => {
         numElemsDisappearRef.current -= 1;
+        console.log("appearing has ended whilst the num elements is:::", numElemsDisappearRef.current);
+
+
 
         setComponentAnimationStates(prev => {
 
@@ -134,6 +137,8 @@ export function useWideScreenImgDisplay({
     }
 
     const onLeavingAnimEnd = (componentKey: keyof IWideProjAnimationComponents) => {
+        console.log("leaving has ended anim:::");
+        
         setComponentAnimationStates(prev => {
             const updated = { ...prev };
 
@@ -150,7 +155,7 @@ export function useWideScreenImgDisplay({
                 } else {
                     updated[key] = {
                         ...updated[key],
-                        animState: "left"
+                        animState: "appeared"
                     }
                 }
             });
@@ -161,6 +166,8 @@ export function useWideScreenImgDisplay({
 
     const onDisappearingAnimEnd = (componentKey: keyof IWideProjAnimationComponents) => {
         numElemsDisappearRef.current += 1;
+
+        console.log("disappearing has ended and numeELements is:::", numElemsDisappearRef.current);
 
         //disappeared
         setComponentAnimationStates(prev => {
@@ -201,6 +208,8 @@ export function useWideScreenImgDisplay({
     }
 
     const onDisplayingAnimEnd = (componentKey: keyof IWideProjAnimationComponents) => {
+        console.log("displaying has ended here so...");
+        
         setComponentAnimationStates(prev => {
             const newVal: IWideProjReferenceTypes = {
                 ...prev[componentKey],
@@ -279,7 +288,33 @@ export function useWideScreenImgDisplay({
 
 
 
+    useEffect(() => {
+        
+        
+        return () => {
+            setComponentAnimationStates(prev => {
+    
+    
+                return {
+                    contentContainer: {
+                        ...prev.contentContainer,
+                        animState: "appeared"
+                    },
+                    homePageImgContainer: {
+                        ...prev.homePageImgContainer,
+                        animState: "appeared"
+                    },
+                    githubImgContainer: {
+                        ...prev.githubImgContainer,
+                        animState: "appeared"
+                    }
+                }
+            });
 
+            isAnimating.current = false;
+            numElemsDisappearRef.current = 0;
+        }
+    }, [isAnimatingPossible]);
 
 
 
@@ -289,13 +324,19 @@ export function useWideScreenImgDisplay({
 
     function handleActivate(e: IElementEventTypes) {
         // No-op for wide screens
+
+        console.log("Handle activate running!!!");
         if (!isAnimatingPossible || isAnimating.current) return;
         e.stopPropagation();
-
+        console.log("Anim under activate was possible!!!");
 
         const container = whichContainer(e);
 
         if (!container) return;
+
+        if (componentAnimationStates[container].animState === "displayed") return;
+
+        console.log("CONTAINER under activate was possible: !!!", container);
 
         activeElemKeyRef.current = container;
 
@@ -327,14 +368,25 @@ export function useWideScreenImgDisplay({
     }
 
     function handleDeactivate(e: IElementEventTypes) {
+
+        console.log("handle deactivate running!!!");
         // No-op for wide screens
         if (!isAnimatingPossible || isAnimating.current) return;
+
+
+
         e.stopPropagation();
+
+        console.log("HANDLE deactivate anim was possible!!!");
 
 
         const container = whichContainer(e);
 
         if (!container) return;
+
+        console.log("HANDLE deactivate container was found:::", container);
+
+        if (componentAnimationStates[container].animState === "appeared") return;
 
 
         const componentRef = componentAnimationStates[container].component;
@@ -364,20 +416,28 @@ export function useWideScreenImgDisplay({
 
     function togglePlayState(e: IElementEventTypes) {
         // No-op for wide screens
+        console.log("TOGGLE running !!!");
+
         if (!isAnimatingPossible || isAnimating.current) return;
         e.stopPropagation();
+
+        console.log("toggle anim was possible!!!");
 
 
         const container = whichContainer(e);
 
         if (!container) return;
 
+        console.log("TOGGLE CONTAINER WAS FOUND:::", container);
+
         if (componentAnimationStates[container].animState === "appeared") {
+            console.log("toggle into activate!!!");
             handleActivate(e);
             return;
         }
 
         if (componentAnimationStates[container].animState === "displayed") {
+            console.log("toggle into deactivate!!!");
             handleDeactivate(e);
             return;
         }

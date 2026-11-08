@@ -70,7 +70,7 @@ export function VisualsLayout({
 
 
     const onAnimationDeactivate = isWideScreen
-        ? handleWideScreenActivate
+        ? handleWideScreenDeactivate
         : isMediumScreen
             ? handleMediumScreenDeactivate
             : undefined;

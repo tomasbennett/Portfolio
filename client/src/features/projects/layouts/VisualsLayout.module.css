@@ -225,6 +225,9 @@
 
     top: 0;
     right: 0;
+
+    width: var(--width);
+    height: var(--height);
 }
 
 
@@ -239,6 +242,9 @@
     
     bottom: 0;
     right: 0;
+
+    width: var(--width);
+    height: var(--height);
 }
 
 
@@ -247,7 +253,7 @@
 
 .githubImgContainer.wideScreen[data-animation="displaying"],
 .homePageImgContainer.wideScreen[data-animation="displaying"]{
-    animation: displayWide .7s linear forwards;
+    animation: displayWide .7s ease-in-out forwards;
 
     z-index: 2;
 }
@@ -262,7 +268,7 @@
 
 .githubImgContainer.wideScreen[data-animation="leaving"],
 .homePageImgContainer.wideScreen[data-animation="leaving"]{
-    animation: leaveWide .7s linear forwards;
+    animation: leaveWide .7s ease-in-out forwards;
 }
 
 .githubImgContainer.wideScreen[data-animation="left"],
@@ -273,7 +279,7 @@
 
 .githubImgContainer.wideScreen[data-animation="disappearing"],
 .homePageImgContainer.wideScreen[data-animation="disappearing"]{
-    animation: disappear .5s linear forwards;
+    animation: disappear .5s ease-in-out forwards;
 
     z-index: 1;
 }
@@ -287,15 +293,15 @@
 
 .githubImgContainer.wideScreen[data-animation="appearing"],
 .homePageImgContainer.wideScreen[data-animation="appearing"]{
-    animation: appear .5s linear forwards;
+    animation: appear .5s ease-in-out forwards;
 }
 
 .githubImgContainer.wideScreen[data-animation="appeared"],
 .homePageImgContainer.wideScreen[data-animation="appeared"]{
     opacity: 1;
 
-    width: var(--width);
-    height: var(--height);
+    /* width: var(--width);
+    height: var(--height); */
 }
 
 
